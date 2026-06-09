@@ -5,9 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BirlesikERP.Domain.AppRole
+namespace BirlesikERP.Domain.Entities.Core.AppUser
 {
-    public class AppRole : IdentityRole<Guid>
+    public class AppUser : IdentityUser<Guid>
     {
+        public string FullName { get; set; } = string.Empty;
     }
 }

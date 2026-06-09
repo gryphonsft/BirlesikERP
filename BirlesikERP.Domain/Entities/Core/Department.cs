@@ -1,5 +1,4 @@
 ﻿using BirlesikERP.Domain.Common;
-using BirlesikERP.Domain.Entities.CRM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,16 +7,12 @@ using System.Threading.Tasks;
 
 namespace BirlesikERP.Domain.Entities.Core
 {
-    public class Project : BaseEntity
+    public class Department : BaseEntity
     {
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public bool IsActive { get; set; }
-        public DateTime DueDate { get; set; }
 
-        public Guid CustomerId { get; set; }
-        public Customer Customer { get; set; } = null!;
-
-        public ICollection<ProjectTask> ProjectTask { get; set; } = new List<ProjectTask>();
+        public ICollection<Team> Teams { get; set; } = new List<Team>();
     }
 }

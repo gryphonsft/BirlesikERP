@@ -1,4 +1,4 @@
-﻿using BirlesikERP.Domain.Entities.Core;
+﻿using BirlesikERP.Domain.Entities.ProjectManagment;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.VisualBasic;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BirlesikERP.Persistence.Configurations.ProjectManagment
 {
-    internal class ProjectConfiguration : IEntityTypeConfiguration<Project>
+    public class ProjectConfiguration : IEntityTypeConfiguration<Project>
     {
         public void Configure(EntityTypeBuilder<Project> builder)
         {

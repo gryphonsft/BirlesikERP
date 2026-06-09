@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BirlesikERP.Domain.Entities.Core
+namespace BirlesikERP.Domain.Entities.ProjectManagment
 {
     public class ProjectTask : BaseEntity
     {
@@ -15,7 +15,7 @@ namespace BirlesikERP.Domain.Entities.Core
         public Guid ProjectId { get; set; }
         public Project Project { get; set; } = null!;
 
-        
+
         public DateTime DueDate { get; set; }
 
         public Status Status { get; set; }

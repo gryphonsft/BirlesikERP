@@ -1,7 +1,7 @@
-﻿using BirlesikERP.Domain.AppRole;
-using BirlesikERP.Domain.AppUser;
-using BirlesikERP.Domain.Entities.Core;
-using BirlesikERP.Domain.Entities.CRM;
+﻿using BirlesikERP.Domain.Entities.Core;
+using BirlesikERP.Domain.Entities.Core.AppRole;
+using BirlesikERP.Domain.Entities.Core.AppUser;
+using BirlesikERP.Domain.Entities.ProjectManagment;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
