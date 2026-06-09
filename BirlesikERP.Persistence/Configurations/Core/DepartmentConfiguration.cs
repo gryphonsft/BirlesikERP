@@ -16,24 +16,22 @@ namespace BirlesikERP.Persistence.Configurations.Core
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Name)
-                .IsRequired()
-                .HasMaxLength(200);
+            .IsRequired()
+            .HasMaxLength(200);
 
             builder.Property(x => x.Description)
-                .HasMaxLength(500);
+            .HasMaxLength(500);
 
-            builder.Property(x => x.CreatedAt)
-                .IsRequired();
             builder.Property(x => x.IsActive)
-                .HasDefaultValue(true);
-            builder.HasIndex(x => x.Name)
-                .IsUnique();
+            .HasDefaultValue(true);
 
+            builder.HasIndex(x => x.Name)
+            .IsUnique();
 
             builder.HasMany(x => x.Teams)
-                   .WithOne(x => x.Department)
-                   .HasForeignKey(x => x.DepartmantId)
-                   .OnDelete(DeleteBehavior.Restrict);
+            .WithOne(x => x.Department)
+            .HasForeignKey(x => x.DepartmentId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         }
     }

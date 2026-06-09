@@ -1,5 +1,5 @@
-using BirlesikERP.Domain.AppRole;
-using BirlesikERP.Domain.AppUser;
+using BirlesikERP.Domain.Entities.Core.AppRole;
+using BirlesikERP.Domain.Entities.Core.AppUser;
 using BirlesikERP.Persistence.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
