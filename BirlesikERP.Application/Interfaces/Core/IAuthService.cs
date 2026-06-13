@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BirlesikERP.Application.DTOs.Auth;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,7 @@ namespace BirlesikERP.Application.Interfaces.Core
 {
     public interface IAuthService
     {
+        Task<LoginResponseDto?> LoginAsync(LoginDto request);
+        Task<RegisterResponseDto> RegisterAsync(RegisterDto request);
     }
 }
