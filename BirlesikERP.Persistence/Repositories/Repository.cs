@@ -18,7 +18,6 @@ namespace BirlesikERP.Persistence.Repositories
             _context = context;
             _dbSet = context.Set<T>();
         }
-
         public async Task<List<T>> GetAllAsync()
         {
             return await _dbSet.ToListAsync();
@@ -27,7 +26,6 @@ namespace BirlesikERP.Persistence.Repositories
         {
             return await _dbSet.FindAsync(Id);
         }
-
         public async Task AddAsync(T entity)
         {
             await _dbSet.AddAsync(entity);

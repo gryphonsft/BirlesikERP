@@ -1,11 +1,13 @@
 using BirlesikERP.Application.Interfaces;
 using BirlesikERP.Application.Interfaces.Core;
+using BirlesikERP.Application.Interfaces.UnitOfWork;
 using BirlesikERP.Application.Services.Core;
 using BirlesikERP.Domain.Entities.Core.AppRole;
 using BirlesikERP.Domain.Entities.Core.AppUser;
 using BirlesikERP.Infrastructure.Security;
 using BirlesikERP.Persistence.Context;
 using BirlesikERP.Persistence.Repositories;
+using BirlesikERP.Persistence.UnitOfWork;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -97,8 +99,10 @@ builder.Services.AddAuthorization();
 builder.Services.AddScoped(typeof(IRepository<>),
                            typeof(Repository<>));
 
+builder.Services.AddScoped<IDepartmentService,DepartmentService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, JwtTokenService>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 #endregion
 
