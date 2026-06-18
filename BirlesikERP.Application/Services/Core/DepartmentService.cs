@@ -3,6 +3,7 @@ using BirlesikERP.Application.Interfaces;
 using BirlesikERP.Application.Interfaces.Core;
 using BirlesikERP.Application.Interfaces.UnitOfWork;
 using BirlesikERP.Domain.Entities.Core;
+using BirlesikERP.Domain.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,16 +14,16 @@ namespace BirlesikERP.Application.Services.Core
 {
     public class DepartmentService : IDepartmentService
     {
-        private readonly IRepository<Department> _departmentRepository;
+        private readonly IDepartmentRepository _departmentRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public DepartmentService(IRepository<Department> departmentRepository,IUnitOfWork unitOfWork)
+        public DepartmentService(IDepartmentRepository departmentRepository, IUnitOfWork unitOfWork)
         {
             _departmentRepository = departmentRepository;
             _unitOfWork = unitOfWork;
         }
-        
-        public async Task<List<DepartmentDto>> GetAllAsync()
+
+        public async Task<IEnumerable<DepartmentDto>> GetAllAsync()
         {
             var departments = await _departmentRepository.GetAllAsync();
 
@@ -32,6 +33,22 @@ namespace BirlesikERP.Application.Services.Core
                 Description = x.Description,
                 CreatedAt = x.CreatedAt
             }).ToList();
+        }
+        public async Task<DepartmentDto?> GetByIdAsync(Guid Id)
+        {
+            var department = await _departmentRepository.GetByIdAsync(Id);
+
+            if (department == null)
+
+                return null;
+
+            return new DepartmentDto
+            {
+                Name = department.Name,
+                Description = department.Description,
+                CreatedAt = department.CreatedAt
+            };
+
         }
         public async Task CreateAsync(CreateDepartmentDto dto)
         {
@@ -43,14 +60,16 @@ namespace BirlesikERP.Application.Services.Core
                 IsActive = true
             };
 
-            await _departmentRepository.AddAsync(department);
+            await _departmentRepository.CreateAsync(department);
 
             await _unitOfWork.SaveChangesAsync();
         }
-        
+
         public async Task<DepartmentDto> GetByNameAsync(string Name)
         {
-            var department = await _departmentRepository.
+            var department = await _departmentRepository.SearchAsync(Name);
+
+            return null;
         }
     }
 }

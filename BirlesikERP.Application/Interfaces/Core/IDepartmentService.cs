@@ -9,7 +9,8 @@ namespace BirlesikERP.Application.Interfaces.Core
 {
     public interface IDepartmentService
     {
-        Task<List<DepartmentDto>> GetAllAsync();
+        Task<IEnumerable<DepartmentDto>> GetAllAsync();
+        Task<DepartmentDto?> GetByIdAsync(Guid Id);
         Task CreateAsync(CreateDepartmentDto dto);
     }
 }
