@@ -7,13 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Controllers\**" />
-    <Content Remove="Controllers\**" />
-    <EmbeddedResource Remove="Controllers\**" />
-    <None Remove="Controllers\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\BirlesikERP.Application\BirlesikERP.Application.csproj" />
     <ProjectReference Include="..\BirlesikERP.Infrastructure\BirlesikERP.Infrastructure.csproj" />
     <ProjectReference Include="..\BirlesikERP.Persistence\BirlesikERP.Persistence.csproj" />

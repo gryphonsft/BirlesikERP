@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BirlesikERP.Application.Services.Core
 {
-    public interface RoleService : IRoleService
+    public class RoleService : IRoleService
     {
     }
 }

@@ -33,6 +33,22 @@ namespace BirlesikERP.Persistence.Configurations.Core
             .HasForeignKey(x => x.DepartmentId)
             .OnDelete(DeleteBehavior.Restrict);
 
+            builder.HasData(
+              new Department
+              {
+                  Id = Guid.Parse("0F7F72F2-31E4-4A5B-BE98-91E4B5F7F001"),
+                  Name = "Yazılım Geliştirme",
+                  Description = "Mobil ve Web uygulamaları geliştirme",
+                  IsActive = true
+              },
+              new Department
+              {
+                  Id = Guid.Parse("1F7F72F2-31E4-4A5B-BE98-91E4B5F7F002"),
+                  Name = "İnsan Kaynakları",
+                  Description = "İşe alım ve çalışanlarla ilgili işler",
+                  IsActive = true
+              }
+              );
         }
     }
 }

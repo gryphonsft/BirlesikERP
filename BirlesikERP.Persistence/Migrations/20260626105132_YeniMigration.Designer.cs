@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BirlesikERP.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260609131103_mig2")]
-    partial class mig2
+    [Migration("20260626105132_YeniMigration")]
+    partial class YeniMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -156,6 +156,26 @@ namespace BirlesikERP.Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("Department");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("0f7f72f2-31e4-4a5b-be98-91e4b5f7f001"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Mobil ve Web uygulamaları geliştirme",
+                            IsActive = true,
+                            Name = "Yazılım Geliştirme",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("1f7f72f2-31e4-4a5b-be98-91e4b5f7f002"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "İşe alım ve çalışanlarla ilgili işler",
+                            IsActive = true,
+                            Name = "İnsan Kaynakları",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("BirlesikERP.Domain.Entities.Core.Team", b =>

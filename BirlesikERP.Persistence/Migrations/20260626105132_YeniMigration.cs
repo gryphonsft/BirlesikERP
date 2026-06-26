@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace BirlesikERP.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class mig2 : Migration
+    public partial class YeniMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -285,6 +287,15 @@ namespace BirlesikERP.Persistence.Migrations
                         principalTable: "Team",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Department",
+                columns: new[] { "Id", "CreatedAt", "Description", "IsActive", "Name", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { new Guid("0f7f72f2-31e4-4a5b-be98-91e4b5f7f001"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Mobil ve Web uygulamaları geliştirme", true, "Yazılım Geliştirme", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { new Guid("1f7f72f2-31e4-4a5b-be98-91e4b5f7f002"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "İşe alım ve çalışanlarla ilgili işler", true, "İnsan Kaynakları", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.CreateIndex(

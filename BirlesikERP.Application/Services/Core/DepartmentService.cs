@@ -22,7 +22,6 @@ namespace BirlesikERP.Application.Services.Core
             _departmentRepository = departmentRepository;
             _unitOfWork = unitOfWork;
         }
-
         public async Task<IEnumerable<DepartmentDto>> GetAllAsync()
         {
             var departments = await _departmentRepository.GetAllAsync();
@@ -48,7 +47,26 @@ namespace BirlesikERP.Application.Services.Core
                 Description = department.Description,
                 CreatedAt = department.CreatedAt
             };
+        }
+        public async Task<DepartmentDetailsDto> GetTeamsAsync(Guid Id)
+        {
+            var department = await _departmentRepository.GetTeamsAsync(Id);
 
+            if (department == null)
+                throw new Exception("Departman bulunamadı");
+
+            return new DepartmentDetailsDto
+            {
+                Id = department.Id,
+                Name = department.Name,
+                TeamCount = department.Teams.Count,
+
+                Teams = department.Teams.Select(t => new TeamDto
+                {
+                    Id = t.Id,
+                    Name = t.Name
+                }).ToList()
+            };
         }
         public async Task CreateAsync(CreateDepartmentDto dto)
         {
@@ -61,15 +79,49 @@ namespace BirlesikERP.Application.Services.Core
             };
 
             await _departmentRepository.CreateAsync(department);
-
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<DepartmentDto> GetByNameAsync(string Name)
+        public async Task UpdateAsync(Guid Id,UpdateDepartmentDto dto)
         {
-            var department = await _departmentRepository.SearchAsync(Name);
+            var department = await _departmentRepository.GetByIdAsync(Id);
 
-            return null;
+            if (department == null)
+                throw new Exception("Böyle bir departman bulunamadı");
+
+            department.Name = dto.Name;
+            department.Description = dto.Description;
+
+            await _departmentRepository.UpdateAsync(department);
+            await _unitOfWork.SaveChangesAsync();
+        }
+        public async Task DeleteByIdAsync(Guid Id)
+        {
+            var department = await _departmentRepository.GetByIdAsync(Id);
+
+            if(department == null)
+            {
+                throw new Exception("Böyle bir departman bulunamadı");
+            }
+            await _departmentRepository.DeleteByIdAsync(Id);
+            await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<DepartmentDto>> SearchAsync(string value)
+        {
+            if (value.Length <= 3)
+                return Enumerable.Empty<DepartmentDto>();
+
+            var department = await _departmentRepository.SearchAsync(value);
+
+            var result = department.Select(x => new DepartmentDto
+            {
+                Name = x.Name,
+                Description = x.Description,
+                CreatedAt = x.CreatedAt
+            });
+
+            return result;
         }
     }
 }

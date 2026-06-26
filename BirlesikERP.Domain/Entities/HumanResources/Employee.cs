@@ -1,5 +1,6 @@
 ﻿using BirlesikERP.Domain.Common;
 using BirlesikERP.Domain.Entities.Core;
+using BirlesikERP.Domain.Entities.Core.AppUser;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace BirlesikERP.Domain.Entities.HumanResources
         public string firstName { get; set; } = string.Empty;
         public string lastName { get; set; } = string.Empty;
         public bool IsActive { get; set; }
+
         public Guid TeamId { get; set; }
         public Team Team { get; set; } = null!;
     }
