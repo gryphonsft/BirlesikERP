@@ -70,6 +70,9 @@ namespace BirlesikERP.Persistence.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -108,6 +111,9 @@ namespace BirlesikERP.Persistence.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId")
+                        .IsUnique();
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -462,6 +468,17 @@ namespace BirlesikERP.Persistence.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("BirlesikERP.Domain.Entities.Core.AppUser.AppUser", b =>
+                {
+                    b.HasOne("BirlesikERP.Domain.Entities.HumanResources.Employee", "Employee")
+                        .WithOne("AppUser")
+                        .HasForeignKey("BirlesikERP.Domain.Entities.Core.AppUser.AppUser", "EmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+                });
+
             modelBuilder.Entity("BirlesikERP.Domain.Entities.Core.Team", b =>
                 {
                     b.HasOne("BirlesikERP.Domain.Entities.Core.Department", "Department")
@@ -565,6 +582,11 @@ namespace BirlesikERP.Persistence.Migrations
             modelBuilder.Entity("BirlesikERP.Domain.Entities.Core.Team", b =>
                 {
                     b.Navigation("Employees");
+                });
+
+            modelBuilder.Entity("BirlesikERP.Domain.Entities.HumanResources.Employee", b =>
+                {
+                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("BirlesikERP.Domain.Entities.ProjectManagment.Customer", b =>

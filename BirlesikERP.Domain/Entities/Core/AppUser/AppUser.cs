@@ -13,6 +13,6 @@ namespace BirlesikERP.Domain.Entities.Core.AppUser
         public string FullName { get; set; } = string.Empty;
 
         public Guid EmployeeId { get; set; }
-        public Employee Employee { get; set; }
+        public Employee Employee { get; set; } = null!;
     }
 }

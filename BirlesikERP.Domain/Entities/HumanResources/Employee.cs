@@ -17,5 +17,7 @@ namespace BirlesikERP.Domain.Entities.HumanResources
 
         public Guid TeamId { get; set; }
         public Team Team { get; set; } = null!;
+
+        public AppUser? AppUser { get; set; }
     }
 }
