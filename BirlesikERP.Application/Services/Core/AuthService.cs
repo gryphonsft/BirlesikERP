@@ -49,7 +49,7 @@ namespace BirlesikERP.Application.Services.Core
                 return new RegisterResponseDto
                 {
                     Success = false,
-                    Message = "Çalışan bulunamadı."
+                    Message = "Çalışan bulunamadı. Öncelikle bir çalışan oluşturun."
                 };
             }
 

@@ -15,11 +15,20 @@ namespace BirlesikERP.Persistence.Repositories.Core
         }
         public async Task<IEnumerable<Team>> GetAllAsync()
         {
-            return await _context.Team.ToListAsync();
+            return await _context.Team
+                .AsNoTracking()
+                .Include(x=> x.Department)
+                .Include(x=> x.Employees)
+                    .ThenInclude(e => e.Person)
+                .Include(x=> x.Employees)
+                    .ThenInclude(e=> e.Position)            
+                .ToListAsync();
         }
         public async Task<Team?> GetByIdAsync(Guid Id)
         {
-            return await _context.Team.FirstOrDefaultAsync(x => x.Id == Id);
+            return await _context.Team
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == Id);
         }
         public async Task<Team?> GetByNameAsync(string Name)
         {

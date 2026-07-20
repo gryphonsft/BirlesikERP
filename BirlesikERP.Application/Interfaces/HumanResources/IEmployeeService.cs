@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BirlesikERP.Application.DTOs.HumanResources;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,6 @@ namespace BirlesikERP.Application.Interfaces.HumanResources
 {
     public interface IEmployeeService
     {
+        Task<IEnumerable<EmployeeDto>> GetAllAsync();
     }
 }

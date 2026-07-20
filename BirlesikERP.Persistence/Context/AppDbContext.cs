@@ -25,6 +25,7 @@ namespace BirlesikERP.Persistence.Context
         public DbSet<Department> Department { get; set; }
         public DbSet<Team> Team { get; set; }
         public DbSet<Employee> Employee { get; set; }
+        public DbSet<Position> Position { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

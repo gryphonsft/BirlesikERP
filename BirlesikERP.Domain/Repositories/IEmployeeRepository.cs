@@ -11,5 +11,9 @@ namespace BirlesikERP.Domain.Repositories
     {
         Task<IEnumerable<Employee>> GetAllAsync();
         Task<Employee?> GetByIdAsync(Guid Id);
+        Task<Employee?> GetByEmailAsync(string Email);
+        Task CreateAsync(Employee employee);
+        Task UpdateAsync(Employee employee);
+        Task DeleteByIdAsync(Guid Id);
     }
 }

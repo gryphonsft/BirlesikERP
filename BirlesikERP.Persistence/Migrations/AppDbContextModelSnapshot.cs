@@ -159,26 +159,33 @@ namespace BirlesikERP.Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("Department");
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("0f7f72f2-31e4-4a5b-be98-91e4b5f7f001"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Mobil ve Web uygulamaları geliştirme",
-                            IsActive = true,
-                            Name = "Yazılım Geliştirme",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("1f7f72f2-31e4-4a5b-be98-91e4b5f7f002"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "İşe alım ve çalışanlarla ilgili işler",
-                            IsActive = true,
-                            Name = "İnsan Kaynakları",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        });
+            modelBuilder.Entity("BirlesikERP.Domain.Entities.Core.Position", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("DepartmentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.ToTable("Position");
                 });
 
             modelBuilder.Entity("BirlesikERP.Domain.Entities.Core.Team", b =>
@@ -228,28 +235,83 @@ namespace BirlesikERP.Persistence.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("DepartmentId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("TeamId")
+                    b.Property<Guid>("PositionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("TeamId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("firstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("lastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.HasIndex("PositionId");
 
                     b.HasIndex("TeamId");
 
                     b.ToTable("Employee");
+                });
+
+            modelBuilder.Entity("BirlesikERP.Domain.Entities.HumanResources.Person", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Age")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId")
+                        .IsUnique();
+
+                    b.ToTable("Person");
                 });
 
             modelBuilder.Entity("BirlesikERP.Domain.Entities.ProjectManagment.Customer", b =>
@@ -479,6 +541,17 @@ namespace BirlesikERP.Persistence.Migrations
                     b.Navigation("Employee");
                 });
 
+            modelBuilder.Entity("BirlesikERP.Domain.Entities.Core.Position", b =>
+                {
+                    b.HasOne("BirlesikERP.Domain.Entities.Core.Department", "Department")
+                        .WithMany("Positions")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+                });
+
             modelBuilder.Entity("BirlesikERP.Domain.Entities.Core.Team", b =>
                 {
                     b.HasOne("BirlesikERP.Domain.Entities.Core.Department", "Department")
@@ -492,13 +565,39 @@ namespace BirlesikERP.Persistence.Migrations
 
             modelBuilder.Entity("BirlesikERP.Domain.Entities.HumanResources.Employee", b =>
                 {
-                    b.HasOne("BirlesikERP.Domain.Entities.Core.Team", "Team")
+                    b.HasOne("BirlesikERP.Domain.Entities.Core.Department", "Department")
                         .WithMany("Employees")
-                        .HasForeignKey("TeamId")
+                        .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("BirlesikERP.Domain.Entities.Core.Position", "Position")
+                        .WithMany("Employees")
+                        .HasForeignKey("PositionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("BirlesikERP.Domain.Entities.Core.Team", "Team")
+                        .WithMany("Employees")
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Department");
+
+                    b.Navigation("Position");
+
                     b.Navigation("Team");
+                });
+
+            modelBuilder.Entity("BirlesikERP.Domain.Entities.HumanResources.Person", b =>
+                {
+                    b.HasOne("BirlesikERP.Domain.Entities.HumanResources.Employee", "Employee")
+                        .WithOne("Person")
+                        .HasForeignKey("BirlesikERP.Domain.Entities.HumanResources.Person", "EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("BirlesikERP.Domain.Entities.ProjectManagment.Project", b =>
@@ -576,7 +675,16 @@ namespace BirlesikERP.Persistence.Migrations
 
             modelBuilder.Entity("BirlesikERP.Domain.Entities.Core.Department", b =>
                 {
+                    b.Navigation("Employees");
+
+                    b.Navigation("Positions");
+
                     b.Navigation("Teams");
+                });
+
+            modelBuilder.Entity("BirlesikERP.Domain.Entities.Core.Position", b =>
+                {
+                    b.Navigation("Employees");
                 });
 
             modelBuilder.Entity("BirlesikERP.Domain.Entities.Core.Team", b =>
@@ -587,6 +695,9 @@ namespace BirlesikERP.Persistence.Migrations
             modelBuilder.Entity("BirlesikERP.Domain.Entities.HumanResources.Employee", b =>
                 {
                     b.Navigation("AppUser");
+
+                    b.Navigation("Person")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("BirlesikERP.Domain.Entities.ProjectManagment.Customer", b =>

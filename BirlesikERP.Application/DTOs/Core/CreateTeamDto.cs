@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace BirlesikERP.Application.DTOs.Core
 {
-    public sealed record UpdateDepartmentDto
+    public class CreateTeamDto
     {
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
+        public Guid DepartmentId { get; set; }
     }
 }

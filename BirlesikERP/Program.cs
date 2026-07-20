@@ -2,11 +2,13 @@ using BirlesikERP.Application.Interfaces;
 using BirlesikERP.Application.Interfaces.Core;
 using BirlesikERP.Application.Interfaces.HumanResources;
 using BirlesikERP.Application.Interfaces.UnitOfWork;
+using BirlesikERP.Application.Mappings;
 using BirlesikERP.Application.Services.Core;
 using BirlesikERP.Application.Services.HumanResources;
 using BirlesikERP.Domain.Entities.Core.AppRole;
 using BirlesikERP.Domain.Entities.Core.AppUser;
 using BirlesikERP.Domain.Repositories;
+using BirlesikERP.Extensions;
 using BirlesikERP.Infrastructure.Security;
 using BirlesikERP.Persistence.Context;
 using BirlesikERP.Persistence.Repositories;
@@ -101,14 +103,20 @@ builder.Services.AddAuthorization();
 
 #region Dependency Injection
 
+builder.Services.AddAutoMapper(_ => { },typeof(MappingProfile).Assembly);
+
+
 builder.Services.AddScoped(typeof(IRepository<>),
                            typeof(Repository<>));
-builder.Services.AddScoped<IDepartmentRepository,DepartmentRepository>();
-builder.Services.AddScoped<ITeamRepository,TeamRepository>();
+builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<IPositionRepository, PositionRepository>();
 
+builder.Services.AddScoped<ITeamService, TeamService>();
+builder.Services.AddScoped<IPositionService, PositionService>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
-builder.Services.AddScoped<IDepartmentService,DepartmentService>();
+builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<ITokenService, JwtTokenService>();
@@ -139,6 +147,7 @@ builder.Services
 
 #endregion
 
+
 #region OpenApi
 
 builder.Services.AddOpenApi();
@@ -154,6 +163,8 @@ app.MapOpenApi();
 app.MapScalarApiReference();
 
 app.UseHttpsRedirection();
+
+app.UseGlobalExceptionMiddleware();
 
 app.UseCors("AllowFrontend");
 

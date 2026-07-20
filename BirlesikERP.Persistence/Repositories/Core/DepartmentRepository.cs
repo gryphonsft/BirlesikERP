@@ -35,6 +35,8 @@ namespace BirlesikERP.Persistence.Repositories.Core
         {
             return await _context.Department
                 .Include(x => x.Teams)
+                    .ThenInclude(t => t.Employees)
+                        .ThenInclude(e => e.Person)
                 .FirstOrDefaultAsync(x => x.Id == Id);
         }
         public async Task<Department?> GetByNameAsync(string Name)

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BirlesikERP.Application.DTOs.Auth
 {
-    public sealed class RegisterDto
+    public sealed record RegisterDto
     {
         public string Username { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;

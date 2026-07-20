@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace BirlesikERP.Application.Interfaces.Core
 {
-    public interface ITeamService
+    public interface IPositionService
     {
-        Task<IEnumerable<TeamDto>> GetAllAsync();
-        Task CreateAsync(CreateTeamDto dto);
-        Task DeleteByIdAsync(Guid Id);
+        Task<IEnumerable<PositionDto>> GetAllAsync();
+        Task<PositionDto?> GetByIdAsync(Guid Id);
+        Task CreateAsync(CreatePositionDto dto);
     }
 }

@@ -1,4 +1,7 @@
-﻿using BirlesikERP.Application.DTOs.Core;
+﻿using AutoMapper;
+using BirlesikERP.Application.DTOs.Core;
+using BirlesikERP.Application.DTOs.HumanResources;
+using BirlesikERP.Application.Exceptions;
 using BirlesikERP.Application.Interfaces;
 using BirlesikERP.Application.Interfaces.Core;
 using BirlesikERP.Application.Interfaces.UnitOfWork;
@@ -16,22 +19,19 @@ namespace BirlesikERP.Application.Services.Core
     {
         private readonly IDepartmentRepository _departmentRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public DepartmentService(IDepartmentRepository departmentRepository, IUnitOfWork unitOfWork)
+        public DepartmentService(IDepartmentRepository departmentRepository, IUnitOfWork unitOfWork, IMapper mapper)
         {
             _departmentRepository = departmentRepository;
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
         public async Task<IEnumerable<DepartmentDto>> GetAllAsync()
         {
             var departments = await _departmentRepository.GetAllAsync();
 
-            return departments.Select(x => new DepartmentDto
-            {
-                Name = x.Name,
-                Description = x.Description,
-                CreatedAt = x.CreatedAt
-            }).ToList();
+            return _mapper.Map<IEnumerable<DepartmentDto>>(departments);
         }
         public async Task<DepartmentDto?> GetByIdAsync(Guid Id)
         {
@@ -61,10 +61,21 @@ namespace BirlesikERP.Application.Services.Core
                 Name = department.Name,
                 TeamCount = department.Teams.Count,
 
-                Teams = department.Teams.Select(t => new TeamDto
+                Teams = department.Teams.Select(t => new TeamSummaryDto
                 {
                     Id = t.Id,
-                    Name = t.Name
+                    Name = t.Name,
+                    Description = t.Description,
+                    IsActive = t.IsActive,
+                    CreatedAt = t.CreatedAt,
+
+                    Employees = t.Employees.Select(e => new EmployeeSummaryDto
+                    {
+                        Id = e.Id,
+                        FirstName = e.Person.FirstName,
+                        LastName = e.Person.LastName
+                    }).ToList()
+
                 }).ToList()
             };
         }
@@ -99,10 +110,9 @@ namespace BirlesikERP.Application.Services.Core
         {
             var department = await _departmentRepository.GetByIdAsync(Id);
 
-            if(department == null)
-            {
-                throw new Exception("Böyle bir departman bulunamadı");
-            }
+            if (department is null)
+                throw new NotFoundException("Departman bulunamadı.");
+
             await _departmentRepository.DeleteByIdAsync(Id);
             await _unitOfWork.SaveChangesAsync();
         }
