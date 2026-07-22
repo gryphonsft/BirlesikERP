@@ -10,5 +10,6 @@ namespace BirlesikERP.Application.Interfaces.HumanResources
     public interface IEmployeeService
     {
         Task<IEnumerable<EmployeeDto>> GetAllAsync();
+        Task CreateAsync(CreateEmployeeDto dto);
     }
 }

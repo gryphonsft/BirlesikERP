@@ -1,4 +1,5 @@
-﻿using BirlesikERP.Application.Interfaces.HumanResources;
+﻿using BirlesikERP.Application.DTOs.HumanResources;
+using BirlesikERP.Application.Interfaces.HumanResources;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,6 +23,12 @@ namespace BirlesikERP.Controllers
                 return NotFound();
 
             return Ok(employee);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreateEmployeeDto dto)
+        {
+            await _employeeService.CreateAsync(dto);
+            return Ok("Kullanici basariyla eklendi.");
         }
     }
 }
