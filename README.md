@@ -12,7 +12,10 @@ BirleşikERP, işletmelerin proje, ekip, müşteri ve görev süreçlerini tek b
 Proje; ölçeklenebilir, sürdürülebilir ve temiz kod prensipleri gözetilerek geliştirilmiş olup, JWT tabanlı kimlik doğrulama, rol bazlı yetkilendirme ve merkezi hata yönetimi gibi modern backend yaklaşımlarını içermektedir.
 
 ---
+## 🖥️ Frontend
+ ![](https://github.com/user-attachments/assets/5ded989e-f202-443b-b0e0-4ac698b82318)
 
+---
 ## 🎯 Amaç
 
 BirleşikERP'nin amacı;
