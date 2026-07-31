@@ -13,7 +13,7 @@ Proje; ölçeklenebilir, sürdürülebilir ve temiz kod prensipleri gözetilerek
 
 ---
 ## 🖥️ Frontend
- ![](https://github.com/user-attachments/assets/5ded989e-f202-443b-b0e0-4ac698b82318)
+ ![](https://github.com/user-attachments/assets/6c688dd6-14c2-4c88-9668-54e5bd45409b)
 
 ---
 ## 🎯 Amaç
