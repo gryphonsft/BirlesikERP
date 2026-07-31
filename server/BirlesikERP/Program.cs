@@ -1,0 +1,182 @@
+using BirlesikERP.Application.Interfaces;
+using BirlesikERP.Application.Interfaces.Core;
+using BirlesikERP.Application.Interfaces.Dashboard;
+using BirlesikERP.Application.Interfaces.HumanResources;
+using BirlesikERP.Application.Interfaces.UnitOfWork;
+using BirlesikERP.Application.Mappings;
+using BirlesikERP.Application.Services.Core;
+using BirlesikERP.Application.Services.Dashboard;
+using BirlesikERP.Application.Services.HumanResources;
+using BirlesikERP.Domain.Entities.Core.AppRole;
+using BirlesikERP.Domain.Entities.Core.AppUser;
+using BirlesikERP.Domain.Repositories;
+using BirlesikERP.Extensions;
+using BirlesikERP.Infrastructure.Security;
+using BirlesikERP.Persistence.Context;
+using BirlesikERP.Persistence.Repositories;
+using BirlesikERP.Persistence.Repositories.Core;
+using BirlesikERP.Persistence.Repositories.HumanResources;
+using BirlesikERP.Persistence.UnitOfWork;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Scalar.AspNetCore;
+using System.Text;
+
+var builder = WebApplication.CreateBuilder(args);
+
+#region Database
+
+var connectionString =
+    builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    options.UseSqlServer(
+        connectionString,
+        sql =>
+        {
+            sql.MigrationsAssembly("BirlesikERP.Persistence");
+        });
+});
+
+#endregion
+
+#region Identity
+
+builder.Services.AddIdentity<AppUser, AppRole>(options =>
+{
+    options.Password.RequiredLength = 3;
+    options.Password.RequireDigit = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+})
+.AddEntityFrameworkStores<AppDbContext>()
+.AddDefaultTokenProviders();
+
+#endregion
+
+#region Jwt Settings
+
+builder.Services.Configure<JwtSettings>(
+    builder.Configuration.GetSection("Jwt"));
+
+var jwtSettings =
+    builder.Configuration
+           .GetSection("Jwt")
+           .Get<JwtSettings>()
+    ?? throw new InvalidOperationException("Jwt configuration not found.");
+
+#endregion
+
+#region Authentication
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme =
+        JwtBearerDefaults.AuthenticationScheme;
+
+    options.DefaultChallengeScheme =
+        JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters =
+        new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+
+            ValidIssuer = jwtSettings.Issuer,
+            ValidAudience = jwtSettings.Audience,
+
+            IssuerSigningKey =
+                new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(jwtSettings.Key))
+        };
+});
+
+builder.Services.AddAuthorization();
+
+#endregion
+
+#region Dependency Injection
+
+builder.Services.AddAutoMapper(_ => { }, typeof(MappingProfile).Assembly);
+
+
+builder.Services.AddScoped(typeof(IRepository<>),
+                           typeof(Repository<>));
+builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+builder.Services.AddScoped<ITeamRepository, TeamRepository>();
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<IPositionRepository, PositionRepository>();
+
+builder.Services.AddScoped<IDashboardService, DashboardService>();
+builder.Services.AddScoped<ITeamService, TeamService>();
+builder.Services.AddScoped<IPositionService, PositionService>();
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<ITokenService, JwtTokenService>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+#endregion
+
+#region Cors
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Vue", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
+#endregion
+
+#region Controllers
+
+builder.Services
+    .AddControllers()
+    .AddNewtonsoftJson();
+
+#endregion
+
+
+#region OpenApi
+
+builder.Services.AddOpenApi();
+
+#endregion
+
+var app = builder.Build();
+
+#region Middleware Pipeline
+
+app.MapOpenApi();
+
+app.MapScalarApiReference();
+
+app.UseHttpsRedirection();
+
+app.UseGlobalExceptionMiddleware();
+
+app.UseCors("Vue");
+
+app.UseAuthentication();
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+#endregion
+
+app.Run();
