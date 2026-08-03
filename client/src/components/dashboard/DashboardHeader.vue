@@ -1,5 +1,5 @@
 <template>
-  <header class="flex items-center justify-between px-6 py-7 border-b-2 border-gray-700" style="background-color: #16171C;">
+  <header class="flex items-center justify-between px-6 py-7 border-b-2 border-gray-700" style="background-color: #111827;">
 
     <div class="relative w-80">
       <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -32,7 +32,6 @@
           class="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 text-[10px] font-bold text-white rounded-full flex items-center justify-center">1</span>
       </button>
 
-      <!-- Bildirim 2 -->
       <button
         class="relative w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 hover:bg-gray-700 text-gray-300 transition">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -43,7 +42,6 @@
           class="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 text-[10px] font-bold text-white rounded-full flex items-center justify-center">1</span>
       </button>
 
-      <!-- Bildirim 3 -->
       <button
         class="relative w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 hover:bg-gray-700 text-gray-300 transition">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -54,7 +52,6 @@
           class="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 text-[10px] font-bold text-white rounded-full flex items-center justify-center">1</span>
       </button>
 
-      <!-- Kullanıcı Avatar -->
       <button
         class="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-700 hover:border-emerald-500 transition">
         <img src="https://i.pravatar.cc/100" alt="User" class="w-full h-full object-cover">

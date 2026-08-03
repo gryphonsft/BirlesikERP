@@ -1,9 +1,12 @@
 using BirlesikERP.Application.Interfaces;
+using BirlesikERP.Application.Interfaces.Audit;
 using BirlesikERP.Application.Interfaces.Core;
 using BirlesikERP.Application.Interfaces.Dashboard;
 using BirlesikERP.Application.Interfaces.HumanResources;
 using BirlesikERP.Application.Interfaces.UnitOfWork;
 using BirlesikERP.Application.Mappings;
+using BirlesikERP.Application.Services;
+using BirlesikERP.Application.Services.Audit;
 using BirlesikERP.Application.Services.Core;
 using BirlesikERP.Application.Services.Dashboard;
 using BirlesikERP.Application.Services.HumanResources;
@@ -14,6 +17,7 @@ using BirlesikERP.Extensions;
 using BirlesikERP.Infrastructure.Security;
 using BirlesikERP.Persistence.Context;
 using BirlesikERP.Persistence.Repositories;
+using BirlesikERP.Persistence.Repositories.Audit;
 using BirlesikERP.Persistence.Repositories.Core;
 using BirlesikERP.Persistence.Repositories.HumanResources;
 using BirlesikERP.Persistence.UnitOfWork;
@@ -22,10 +26,29 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
+using Serilog;
+using Serilog.Sinks.MSSqlServer;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+#region Serilog
+
+
+//Log.Logger = new LoggerConfiguration()
+//    .ReadFrom.Configuration(builder.Configuration)
+//    .WriteTo.MSSqlServer(
+//        connectionString: builder.Configuration.GetConnectionString("DefaultConnection"),
+//        sinkOptions: new MSSqlServerSinkOptions
+//        {
+//            TableName = "Logs",
+//            AutoCreateSqlTable = true
+//        })
+//    .CreateLogger();
+
+//builder.Host.UseSerilog();
+
+#endregion
 #region Database
 
 var connectionString =
@@ -40,6 +63,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
             sql.MigrationsAssembly("BirlesikERP.Persistence");
         });
 });
+#endregion
+
+#region Http Context
+
+builder.Services.AddHttpContextAccessor();
 
 #endregion
 
@@ -105,7 +133,10 @@ builder.Services.AddAuthorization();
 
 #region Dependency Injection
 
-builder.Services.AddAutoMapper(_ => { }, typeof(MappingProfile).Assembly);
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.LicenseKey = builder.Configuration["AutoMapper:LisansAnahtari"];
+}, typeof(MappingProfile).Assembly);
 
 
 builder.Services.AddScoped(typeof(IRepository<>),
@@ -114,7 +145,10 @@ builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IPositionRepository, PositionRepository>();
+builder.Services.AddScoped<IAuditRepository, AuditRepository>();
 
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+builder.Services.AddScoped<IAuditService, AuditService>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
 builder.Services.AddScoped<ITeamService, TeamService>();
 builder.Services.AddScoped<IPositionService, PositionService>();
@@ -125,6 +159,7 @@ builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<ITokenService, JwtTokenService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+
 #endregion
 
 #region Cors
@@ -134,7 +169,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("Vue", policy =>
     {
         policy
-            .WithOrigins("http://localhost:5173")
+            .WithOrigins("https://birlesikerp.runasp.net")
             .AllowAnyHeader()
             .AllowAnyMethod();
     });

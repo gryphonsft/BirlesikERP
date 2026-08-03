@@ -3,7 +3,7 @@ import Sidebar from "../components/common/Sidebar.vue";
 </script>
 
 <template>
-  <div class="flex h-screen" style="background-color: #16171C;">
+  <div class="flex h-screen" style="background-color: #111827;">
 
     <Sidebar />
 

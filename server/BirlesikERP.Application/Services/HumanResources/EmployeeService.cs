@@ -1,29 +1,35 @@
 ﻿using AutoMapper;
 using BirlesikERP.Application.DTOs.HumanResources;
 using BirlesikERP.Application.Exceptions;
+using BirlesikERP.Application.Interfaces.Audit;
 using BirlesikERP.Application.Interfaces.HumanResources;
 using BirlesikERP.Application.Interfaces.UnitOfWork;
+using BirlesikERP.Domain.Entities.Audit;
 using BirlesikERP.Domain.Entities.HumanResources;
 using BirlesikERP.Domain.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace BirlesikERP.Application.Services.HumanResources
 {
     public class EmployeeService : IEmployeeService
     {
         private readonly IEmployeeRepository _employeeRepository;
+        private readonly IDepartmentRepository _departmentRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IAuditService _auditService;
 
-        public EmployeeService(IEmployeeRepository employeeRepository,IUnitOfWork unitOfWork,IMapper mapper)
+        public EmployeeService(IEmployeeRepository employeeRepository,
+            IDepartmentRepository departmentRepository,
+            IUnitOfWork unitOfWork,
+            IMapper mapper,
+            IAuditService auditService)
         {
             _employeeRepository = employeeRepository;
+            _departmentRepository = departmentRepository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _auditService = auditService;
         }
 
         public async Task<IEnumerable<EmployeeDto>> GetAllAsync()
@@ -56,7 +62,7 @@ namespace BirlesikERP.Application.Services.HumanResources
         }
         public async Task<IEnumerable<EmployeeSummaryDto>> GetAsync(int page, int pageSize)
         {
-            var employees = await _employeeRepository.GetAsync(page,pageSize);
+            var employees = await _employeeRepository.GetAsync(page, pageSize);
 
             if (employees is null)
                 throw new NotFoundException("Kullanici bulunamadi");
@@ -100,6 +106,11 @@ namespace BirlesikERP.Application.Services.HumanResources
         }
         public async Task CreateAsync(CreateEmployeeDto dto)
         {
+            var department = await _departmentRepository.GetByIdAsync(dto.DepartmentId);
+
+            if (department is null)
+                throw new NotFoundException("Böyle bir departman yok. Kayıt gerçekleşmesi için, lütfen geçerli bir departmanıd giriniz.");
+
             var employee = new Employee
             {
                 IsActive = true,
@@ -113,18 +124,25 @@ namespace BirlesikERP.Application.Services.HumanResources
             {
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
-                Email =    dto.Email,
-                Phone= dto.Phone,
-                City =  dto.City,
+                Email = dto.Email,
+                Phone = dto.Phone,
+                City = dto.City,
                 Age = dto.Age,
                 BirthDate = dto.BirthDate,
-                
             };
 
             await _employeeRepository.CreateAsync(employee);
+
+            await _auditService.LogAsync(
+            AuditAction.Create,
+            AuditEntity.Employee,
+            employee.Id,
+            $"{employee.Person.FirstName} {employee.Person.LastName} isimli çalışan oluşturuldu.",
+            department.Name);
+
             await _unitOfWork.SaveChangesAsync();
         }
-        public async Task UpdateAsync(Guid Id,UpdateEmployeeDto dto)
+        public async Task UpdateAsync(Guid Id, UpdateEmployeeDto dto)
         {
             var employee = await _employeeRepository.GetByIdAsync(Id);
 

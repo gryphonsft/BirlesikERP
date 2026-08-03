@@ -17,7 +17,7 @@ const emit = defineEmits(["close", "save"]);
     >
       <!-- Header -->
       <div
-        class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-6 flex justify-between items-center"
+        class=" text-white px-8 py-6 flex justify-between items-center" style="background-color: #26262A;"
       >
         <div>
           <h2 class="text-2xl font-bold">Çalışanı Düzenle</h2>

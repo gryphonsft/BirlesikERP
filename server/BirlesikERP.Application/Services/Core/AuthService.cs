@@ -31,7 +31,7 @@ namespace BirlesikERP.Application.Services.Core
             if (!result)
                 return null;
 
-            var token = _tokenService.GenerateToken(user);
+            var token = await _tokenService.GenerateToken(user);
 
             return new LoginResponseDto
             {

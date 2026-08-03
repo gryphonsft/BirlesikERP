@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BirlesikERP.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260722130402_mig1")]
+    [Migration("20260802103311_mig1")]
     partial class mig1
     {
         /// <inheritdoc />
@@ -24,6 +24,44 @@ namespace BirlesikERP.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("BirlesikERP.Domain.Entities.Audit.AuditLog", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Action")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DepartmentName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Entity")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("entityId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("userId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("userName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AuditLog");
+                });
 
             modelBuilder.Entity("BirlesikERP.Domain.Entities.Core.AppRole.AppRole", b =>
                 {

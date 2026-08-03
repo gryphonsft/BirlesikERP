@@ -1,9 +1,8 @@
 <script setup>
-import { NIcon } from "naive-ui";
 defineProps({
     title: String,
     count: Number,
-    icon: Object
+    icon: [Object, Function]
 });
 </script>
 
@@ -17,12 +16,9 @@ defineProps({
          cursor-pointer" style="background-color: #24242E;">
 
         <div class="flex items-center gap-4">
-            <n-icon size="36">
-                <component :is="icon" />
-            </n-icon>
-            <h3 class="text-white text-2xl">
+            <component :is="icon" :size="36" color="#fff" />
+            <h3 class="text-white text-xl">
                 {{ title }}
-
             </h3>
         </div>
 

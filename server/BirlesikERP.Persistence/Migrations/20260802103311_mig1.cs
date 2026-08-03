@@ -26,6 +26,25 @@ namespace BirlesikERP.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AuditLog",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Action = table.Column<int>(type: "int", nullable: false),
+                    Entity = table.Column<int>(type: "int", nullable: false),
+                    entityId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    userId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    userName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DepartmentName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AuditLog", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Customer",
                 columns: table => new
                 {
@@ -463,6 +482,9 @@ namespace BirlesikERP.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "AuditLog");
 
             migrationBuilder.DropTable(
                 name: "Person");

@@ -22,6 +22,44 @@ namespace BirlesikERP.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("BirlesikERP.Domain.Entities.Audit.AuditLog", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Action")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DepartmentName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Entity")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("entityId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("userId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("userName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AuditLog");
+                });
+
             modelBuilder.Entity("BirlesikERP.Domain.Entities.Core.AppRole.AppRole", b =>
                 {
                     b.Property<Guid>("Id")
