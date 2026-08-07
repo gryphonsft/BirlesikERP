@@ -20,8 +20,12 @@ namespace BirlesikERP.Controllers
         {
             var team = await _teamService.GetAllAsync();
 
-            if (team == null)
-                return NotFound();
+            return Ok(team);
+        }
+        [HttpGet("{Id}")]
+        public async Task<IActionResult> GetById(Guid Id)
+        {
+            var team = await _teamService.GetByIdAsync(Id);
 
             return Ok(team);
         }
@@ -35,6 +39,12 @@ namespace BirlesikERP.Controllers
         public async Task<IActionResult> DeleteById(Guid Id)
         {
             await _teamService.DeleteByIdAsync(Id);
+            return NoContent();
+        }
+        [HttpDelete]
+        public async Task<IActionResult> DeleteAll()
+        {
+            await _teamService.DeleteAllAsync();
             return NoContent();
         }
     }

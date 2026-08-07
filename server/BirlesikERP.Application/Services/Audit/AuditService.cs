@@ -1,4 +1,5 @@
-﻿using BirlesikERP.Application.Interfaces;
+﻿using BirlesikERP.Application.Exceptions;
+using BirlesikERP.Application.Interfaces;
 using BirlesikERP.Application.Interfaces.Audit;
 using BirlesikERP.Domain.Entities.Audit;
 using BirlesikERP.Domain.Repositories;
@@ -26,6 +27,9 @@ namespace BirlesikERP.Application.Services.Audit
             string? departmentName = null)
         {
             var currentUser = _currentUserService.GetCurrentUser();
+
+            if (currentUser is null)
+                throw new NotFoundException("Böyle bir 'currentUser' bulunamadı");
 
             var auditLog = new AuditLog
             {

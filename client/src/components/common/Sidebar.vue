@@ -1,5 +1,14 @@
 <script setup>
-import { LayoutDashboard, Users, Building2 } from '@lucide/vue';
+import {
+    LayoutDashboard,
+    Users,
+    Building2,
+    Handshake,
+    BriefcaseBusiness,
+    UserKey,
+    ScrollText,
+    Folders
+} from '@lucide/vue';
 import logo from '@/assets/images/logo.png';
 </script>
 <template>
@@ -25,7 +34,7 @@ import logo from '@/assets/images/logo.png';
             <div class="flex items-center">
                 <RouterLink to="/employees" class="flex items-center rounded-lg px-4 py-3 gap-2 hover:bg-slate-800">
                     <Users />
-                    Çalışanlar
+                    Employees
 
                 </RouterLink>
             </div>
@@ -33,8 +42,38 @@ import logo from '@/assets/images/logo.png';
             <div class="flex items-center">
                 <RouterLink to="/departments" class="flex items-center rounded-lg px-4 py-3 gap-2 hover:bg-slate-800">
                     <Building2 />
-                    Departmanlar
+                    Departments
 
+                </RouterLink>
+            </div>
+            <div class="flex items-center">
+                <RouterLink to="/teams" class="flex items-center rounded-lg px-4 py-3 gap-2 hover:bg-slate-800">
+                    <Handshake />
+                    Teams
+                </RouterLink>
+            </div>
+            <div class="flex items-center">
+                <RouterLink to="/positions" class="flex items-center rounded-lg px-4 py-3 gap-2 hover:bg-slate-800">
+                    <BriefcaseBusiness />
+                    Positions
+                </RouterLink>
+            </div>
+            <div class="flex items-center">
+                <RouterLink to="/projects" class="flex items-center rounded-lg px-4 py-3 gap-2 hover:bg-slate-800">
+                    <Folders />
+                    Projects
+                </RouterLink>
+            </div>
+            <div class="flex items-center">
+                <RouterLink to="/roles" class="flex items-center rounded-lg px-4 py-3 gap-2 hover:bg-slate-800">
+                    <UserKey />
+                    Roles
+                </RouterLink>
+            </div>
+            <div class="flex items-center">
+                <RouterLink to="/logs" class="flex items-center rounded-lg px-4 py-3 gap-2 hover:bg-slate-800">
+                    <ScrollText />
+                    Logs
                 </RouterLink>
             </div>
 

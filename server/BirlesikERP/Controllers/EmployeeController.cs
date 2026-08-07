@@ -27,10 +27,10 @@ namespace BirlesikERP.Controllers
         [HttpGet]
         public async Task<IActionResult> Get(int page = 1, int pageSize = 3)
         {
-            var employee = await _employeeService.GetAsync(page,pageSize);
+            var employee = await _employeeService.GetAsync(page, pageSize);
             return Ok(employee);
         }
-        [HttpGet]
+        [HttpGet("{Id}")]
         public async Task<IActionResult> GetById(Guid Id)
         {
             var employee = await _employeeService.GetByIdAsync(Id);

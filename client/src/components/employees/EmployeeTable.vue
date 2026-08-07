@@ -16,174 +16,64 @@ const emit = defineEmits([
 </script>
 
 <template>
-  <div class="card">
-    <div class="card-header mb-4">
-      <div class="left">
-        <h2 class="text-2xl font-bold">Çalışanlar</h2>
+  <div class="bg-[#18181C] p-6 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+
+    <div class="flex justify-between items-center mb-4">
+      <div class="flex items-center gap-5">
+        <h2 class="text-2xl font-bold text-white">Çalışanlar</h2>
 
         <EmployeeSearch v-model="search" />
-
       </div>
     </div>
 
-    <table class="table">
+    <table class="w-full border-separate border-spacing-0 overflow-hidden rounded-xl">
 
-      <thead class="text-white" style="background-color: #26262A;">
+      <thead class="bg-[#26262A] text-white">
         <tr>
-          <th>Id</th>
-          <th>Ad</th>
-          <th>Soyad</th>
-          <th></th>
+          <th class="p-4 text-left">Id</th>
+          <th class="p-4 text-left">Ad</th>
+          <th class="p-4 text-left">Soyad</th>
+          <th class="p-4 text-left"></th>
         </tr>
       </thead>
 
       <tbody>
-        <tr v-for="employee in employees" :key="employee.id" class="text-lg text-white">
-          <td>{{ employee.id }}</td>
-          <td>{{ employee.firstName }}</td>
-          <td>{{ employee.lastName }}</td>
-          <td>
-            <button class=" text-white px-1 py-1" style="background-color: #26262A;"
-              @click="emit('edit', employee.id)">
+        <tr
+          v-for="employee in employees"
+          :key="employee.id"
+          class="text-lg text-white transition-all duration-200"
+        >
+          <td class="p-4 border-b border-gray-200">{{ employee.id }}</td>
+          <td class="p-4 border-b border-gray-200">{{ employee.firstName }}</td>
+          <td class="p-4 border-b border-gray-200">{{ employee.lastName }}</td>
+          <td class="p-4 border-b border-gray-200">
+            <button
+              class="bg-[#26262A] text-white px-3 py-2 rounded hover:bg-[#313136] transition-colors"
+              @click="emit('edit', employee.id)"
+            >
               Detaylı
             </button>
           </td>
         </tr>
       </tbody>
+
     </table>
-    <div class="flex gap-4 justify-end">
-    <button class="p-2  text-white mt-2" style="background-color: #26262A;" @click="emit('previousPage')">
-      Önceki Sayfa
-    </button>
-    <button class="p-2 text-white mt-2" style="background-color: #26262A;" @click="emit('nextPage')">
-      Sonraki Sayfa
-    </button>
-  </div>
-  </div>
 
+    <div class="flex justify-end gap-4 mt-4">
+      <button
+        class="bg-[#26262A] text-white px-4 py-2 rounded hover:bg-[#313136] transition-colors"
+        @click="emit('previousPage')"
+      >
+        Önceki Sayfa
+      </button>
+
+      <button
+        class="bg-[#26262A] text-white px-4 py-2 rounded hover:bg-[#313136] transition-colors"
+        @click="emit('nextPage')"
+      >
+        Sonraki Sayfa
+      </button>
+    </div>
+
+  </div>
 </template>
-
-<style scoped>
-.card {
-  padding: 25px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
-  background-color: #18181C;
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.card-header h2 {
-  margin: 0;
-  color: #ffffff;
-}
-
-.count {
-
-  background: #2563eb;
-  color: white;
-  padding: 8px 15px;
-  border-radius: 20px;
-  font-size: 14px;
-
-}
-
-.table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-
-
-.table th {
-
-  padding: 16px;
-  text-align: left;
-
-}
-
-.table td {
-
-  padding: 15px;
-  border-bottom: 1px solid #eee;
-
-}
-
-.table tbody tr {
-
-  transition: .25s;
-
-}
-
-
-.person {
-
-  display: flex;
-  align-items: center;
-  gap: 15px;
-
-}
-
-.avatar {
-
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  background: #2563eb;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold;
-  font-size: 18px;
-
-}
-
-.name {
-
-  font-weight: 600;
-
-}
-
-.birth {
-
-  color: gray;
-  font-size: 13px;
-
-}
-
-.badge {
-
-  padding: 6px 15px;
-  border-radius: 25px;
-  font-size: 13px;
-  font-weight: bold;
-
-}
-
-.active {
-
-  background: #dcfce7;
-  color: #166534;
-
-}
-
-.passive {
-
-  background: #fee2e2;
-  color: #991b1b;
-
-}
-
-.left {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-</style>

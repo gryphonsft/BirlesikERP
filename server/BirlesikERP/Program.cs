@@ -169,7 +169,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("Vue", policy =>
     {
         policy
-            .WithOrigins("https://birlesikerp.runasp.net")
+            .WithOrigins("http://localhost:5173")
             .AllowAnyHeader()
             .AllowAnyMethod();
     });

@@ -11,7 +11,6 @@ defineProps({
     <div class=" rounded-xl shadow-md p-6
          hover:shadow-2xl
          hover:-translate-y-1
-         hover:border
          transition-all
          cursor-pointer" style="background-color: #24242E;">
 

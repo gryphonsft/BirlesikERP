@@ -1,11 +1,11 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import { getStatisctics } from "../services/dashboardService";
-import DashboardStatistics from "../components/dashboard/DashboardStatistics.vue";
-import DashboardHeader from "../components/dashboard/DashboardHeader.vue";
-import DashboardDepartmentCharts from "../components/dashboard/DashboardDepartmentCharts.vue";
-import DashboardTicketCharts from "../components/dashboard/DashboardTicketCharts.vue";
-import DashboardRecentActivities from "../components/dashboard/DashboardRecentActivities.vue";
+import { getStatisctics } from "../../services/dashboardService.js";
+import DashboardStatistics from "../../components/dashboard/DashboardStatistics.vue";
+import DashboardHeader from "../../components/dashboard/DashboardHeader.vue";
+import DashboardDepartmentCharts from "../../components/dashboard/DashboardDepartmentCharts.vue";
+import DashboardTicketCharts from "../../components/dashboard/DashboardTicketCharts.vue";
+import DashboardRecentActivities from "../../components/dashboard/DashboardRecentActivities.vue";
 const statistics = ref({
     employeeCount: 0,
     departmentCount: 0,

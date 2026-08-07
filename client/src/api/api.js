@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export default axios.create({
-    baseURL: "https://api-birlesikerp.runasp.net"
+    baseURL: "https://localhost:7060"
 });

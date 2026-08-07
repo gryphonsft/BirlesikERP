@@ -1,14 +1,10 @@
 ﻿using BirlesikERP.Application.DTOs.Core;
 using BirlesikERP.Application.DTOs.HumanResources;
+using BirlesikERP.Application.Exceptions;
 using BirlesikERP.Application.Interfaces.Core;
 using BirlesikERP.Application.Interfaces.UnitOfWork;
 using BirlesikERP.Domain.Entities.Core;
 using BirlesikERP.Domain.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BirlesikERP.Application.Services.Core
 {
@@ -22,11 +18,28 @@ namespace BirlesikERP.Application.Services.Core
             _teamRepository = teamRepository;
             _unitOfWork = unitOfWork;
         }
-        public async Task<IEnumerable<TeamDto>> GetAllAsync()
+        public async Task<IEnumerable<TeamListDto>> GetAllAsync()
         {
             var teams = await _teamRepository.GetAllAsync();
 
-            return teams.Select(team => new TeamDto
+            return teams.Select(team => new TeamListDto
+            {
+                Id = team.Id,
+                Name = team.Name,
+                Description = team.Description,
+                IsActive = team.IsActive,
+                CreatedAt = team.CreatedAt
+            }).ToList();
+
+        }
+        public async Task<TeamDto?> GetByIdAsync(Guid Id)
+        {
+            var team = await _teamRepository.GetByIdAsync(Id);
+
+            if (team is null)
+                throw new NotFoundException("Takım bulunamadı");
+
+            return new TeamDto
             {
                 Id = team.Id,
                 Name = team.Name,
@@ -41,13 +54,14 @@ namespace BirlesikERP.Application.Services.Core
                 {
                     Id = employee.Id,
                     CreatedAt = employee.CreatedAt,
-
                     IsActive = employee.IsActive,
 
                     DepartmentId = employee.DepartmentId,
                     DepartmentName = employee.Department.Name,
+
                     TeamId = employee.TeamId,
                     PositionId = employee.PositionId,
+
                     FirstName = employee.Person.FirstName,
                     LastName = employee.Person.LastName,
                     Email = employee.Person.Email,
@@ -55,10 +69,10 @@ namespace BirlesikERP.Application.Services.Core
                     City = employee.Person.City,
                     Age = employee.Person.Age,
                     BirthDate = employee.Person.BirthDate,
+
                     PositionName = employee.Position.Name
                 }).ToList()
-
-            }).ToList();
+            };
         }
         public async Task CreateAsync(CreateTeamDto dto)
         {
@@ -77,11 +91,16 @@ namespace BirlesikERP.Application.Services.Core
         {
             var team = await _teamRepository.GetByIdAsync(Id);
 
-            if(team == null)
+            if (team == null)
             {
-                throw new Exception("Böyle bir takım bulunamadı");
+                throw new NotFoundException("Böyle bir takım bulunamadı");
             }
             await _teamRepository.DeleteByIdAsync(Id);
+            await _unitOfWork.SaveChangesAsync();
+        }
+        public async Task DeleteAllAsync()
+        {
+            await _teamRepository.DeleteAllAsync();
             await _unitOfWork.SaveChangesAsync();
         }
     }

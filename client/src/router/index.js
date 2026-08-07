@@ -2,9 +2,15 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import DefaultLayout from "../layouts/DefaultLayout.vue";
 
-import DashboardView from "../views/DashboardView.vue";
-import EmployeeView from "../views/EmployeeView.vue";
-import DepartmentView from "../views/DepartmentView.vue";
+import DashboardView from "../views/Dashboard/DashboardView.vue";
+import EmployeeView from "../views/Employee/EmployeeView.vue";
+import DepartmentView from "../views/Department/DepartmentView.vue";
+import DepartmentAddView from "../views/Department/DepartmentAddView.vue";
+import TeamView from "../views/Team/TeamView.vue";
+import TeamAddView from "../views/Team/TeamAddView.vue";
+import PositionView from "../views/Position/PositionView.vue";
+import RolesView from "../views/Role/RolesView.vue";
+import LogsView from "../views/Log/LogsView.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -27,7 +33,32 @@ const router = createRouter({
         {
           path:"departments",
           component: DepartmentView
-        }
+        },
+        {
+          path:"departments/add",
+          component: DepartmentAddView
+        },
+        {
+          path:"teams",
+          component: TeamView
+        },
+        {
+          path:"teams/add",
+          component: TeamAddView
+        },
+        {
+          path:"positions",
+          component: PositionView
+        },
+        {
+          path:"roles",
+          component: RolesView
+        },
+        {
+          path:"logs",
+          component: LogsView
+        },
+        
       ],
     },
   ],

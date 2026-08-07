@@ -1,9 +1,9 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
-import { getEmployees, getEmployeeById } from "../services/employeeService";
-import EmployeeTable from "../components/employees/EmployeeTable.vue"
-import EmployeeSearch from "../components/employees/EmployeeSearch.vue";
-import EmployeeEditModal from "../components/employees/EmployeeEditModal.vue";
+import { getEmployees, getEmployeeById } from "../../services/employeeService";
+import EmployeeTable from "../../components/employees/EmployeeTable.vue"
+import EmployeeSearch from "../../components/employees/EmployeeSearch.vue";
+import EmployeeEditModal from "../../components/employees/EmployeeEditModal.vue";
 
 const search = ref("");
 

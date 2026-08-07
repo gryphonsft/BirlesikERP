@@ -17,5 +17,10 @@ namespace BirlesikERP.Persistence.Repositories
         {
             return await _context.Set<T>().CountAsync();
         }
+        public Task DeleteAllAsync()
+        {
+            _context.Set<T>().RemoveRange(_context.Set<T>());
+            return Task.CompletedTask;
+        }
     }
 }

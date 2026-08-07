@@ -7,9 +7,9 @@ public class AuditLog
     public AuditEntity Entity { get; set; }
     public Guid? entityId { get; set; }
     public Guid? userId { get; set; }
-    public string userName { get; set; } = default!;
-    public string Description { get; set; } = default!;
-    public string DepartmentName { get; set; } = default!;
+    public string? userName { get; set; } 
+    public string? Description { get; set; } 
+    public string? DepartmentName { get; set; } 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
 }

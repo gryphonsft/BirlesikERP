@@ -9,8 +9,10 @@ namespace BirlesikERP.Application.Interfaces.Core
 {
     public interface ITeamService
     {
-        Task<IEnumerable<TeamDto>> GetAllAsync();
+        Task<IEnumerable<TeamListDto>> GetAllAsync();
+        Task<TeamDto?> GetByIdAsync(Guid Id);
         Task CreateAsync(CreateTeamDto dto);
         Task DeleteByIdAsync(Guid Id);
+        Task DeleteAllAsync();
     }
 }
