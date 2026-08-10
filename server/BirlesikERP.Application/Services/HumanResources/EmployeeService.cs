@@ -31,35 +31,6 @@ namespace BirlesikERP.Application.Services.HumanResources
             _mapper = mapper;
             _auditService = auditService;
         }
-
-        public async Task<IEnumerable<EmployeeDto>> GetAllAsync()
-        {
-            var employees = await _employeeRepository.GetAllAsync();
-
-            return employees.Select(x => new EmployeeDto
-            {
-                Id = x.Id,
-                FirstName = x.Person.FirstName,
-                LastName = x.Person.LastName,
-                Email = x.Person.Email,
-                Phone = x.Person.Phone,
-                City = x.Person.City,
-                Age = x.Person.Age,
-                BirthDate = x.Person.BirthDate,
-                CreatedAt = x.CreatedAt,
-                IsActive = x.IsActive,
-
-                DepartmentName = x.Department.Name,
-                DepartmentId = x.DepartmentId,
-
-                TeamName = x.Team?.Name,
-                TeamId = x.TeamId,
-
-                PositionName = x.Position.Name,
-                PositionId = x.PositionId
-
-            });
-        }
         public async Task<IEnumerable<EmployeeSummaryDto>> GetAsync(int page, int pageSize)
         {
             var employees = await _employeeRepository.GetAsync(page, pageSize);

@@ -38,7 +38,7 @@ function submit() {
                     </h1>
                 </div>
                 <div class="flex gap-6">
-                    <RouterLink to="/departments" class="bg-white p-3 rounded-lg px-6">
+                    <RouterLink to="/teams" class="bg-white p-3 rounded-lg px-6">
                         İptal
                     </RouterLink>
                     <button class="flex items-center text-white bg-blue-600 p-3 rounded-lg px-6 mr-35">

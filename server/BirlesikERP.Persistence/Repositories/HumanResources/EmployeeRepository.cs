@@ -13,16 +13,6 @@ namespace BirlesikERP.Persistence.Repositories.HumanResources
         {
             _context = context;
         }
-        public async Task<IEnumerable<Employee>> GetAllAsync()
-        {
-            return await _context.Employee
-                 .Include(x => x.Person)
-                 .Include(x => x.Department)
-                 .Include(x => x.Team)
-                 .Include(x => x.Position)
-                 .AsNoTracking()
-                 .ToListAsync();
-        }
         public async Task<IEnumerable<Employee>> GetAsync(int page,int pageSize)
         {
             return await _context.Employee

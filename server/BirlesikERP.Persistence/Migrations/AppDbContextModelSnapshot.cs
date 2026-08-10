@@ -35,11 +35,9 @@ namespace BirlesikERP.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DepartmentName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Entity")
@@ -52,7 +50,6 @@ namespace BirlesikERP.Persistence.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("userName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
