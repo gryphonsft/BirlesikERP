@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BirlesikERP.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class mig1 : Migration
+    public partial class Mig1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -34,9 +34,9 @@ namespace BirlesikERP.Persistence.Migrations
                     Entity = table.Column<int>(type: "int", nullable: false),
                     entityId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     userId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    userName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DepartmentName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    userName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DepartmentName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -77,6 +77,20 @@ namespace BirlesikERP.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Department", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Permission",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Permission", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -166,6 +180,30 @@ namespace BirlesikERP.Persistence.Migrations
                         principalTable: "Department",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RolePermissions",
+                columns: table => new
+                {
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PermissionId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RolePermissions", x => new { x.RoleId, x.PermissionId });
+                    table.ForeignKey(
+                        name: "FK_RolePermissions_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RolePermissions_Permission_PermissionId",
+                        column: x => x.PermissionId,
+                        principalTable: "Permission",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -438,6 +476,12 @@ namespace BirlesikERP.Persistence.Migrations
                 column: "TeamId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Permission_Name",
+                table: "Permission",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Person_EmployeeId",
                 table: "Person",
                 column: "EmployeeId",
@@ -457,6 +501,11 @@ namespace BirlesikERP.Persistence.Migrations
                 name: "IX_ProjectTask_ProjectId",
                 table: "ProjectTask",
                 column: "ProjectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RolePermissions_PermissionId",
+                table: "RolePermissions",
+                column: "PermissionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Team_DepartmentId_Name",
@@ -493,13 +542,19 @@ namespace BirlesikERP.Persistence.Migrations
                 name: "ProjectTask");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
+                name: "RolePermissions");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Project");
+
+            migrationBuilder.DropTable(
+                name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Permission");
 
             migrationBuilder.DropTable(
                 name: "Employee");

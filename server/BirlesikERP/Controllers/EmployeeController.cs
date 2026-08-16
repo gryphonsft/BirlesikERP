@@ -14,16 +14,7 @@ namespace BirlesikERP.Controllers
         {
             _employeeService = employeeService;
         }
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            var employee = await _employeeService.GetAllAsync();
 
-            if (employee == null)
-                return NotFound();
-
-            return Ok(employee);
-        }
         [HttpGet]
         public async Task<IActionResult> Get(int page = 1, int pageSize = 3)
         {

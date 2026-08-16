@@ -1,43 +1,84 @@
 ﻿using BirlesikERP.Application.Interfaces;
+using BirlesikERP.Domain.Entities.Core.AppRole;
 using BirlesikERP.Domain.Entities.Core.AppUser;
+using BirlesikERP.Domain.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BirlesikERP.Infrastructure.Security
 {
-    public class JwtTokenService : ITokenService
+    public class JwtTokenService : IJwtTokenService
     {
         private readonly JwtSettings _jwtSettings;
         private readonly UserManager<AppUser> _userManager;
+        private readonly RoleManager<AppRole> _roleManager;
+        private readonly IPermissionRepository _permissionRepository;
 
-        public JwtTokenService(IOptions<JwtSettings> jwtSettings, UserManager<AppUser> userManager)
+        public JwtTokenService(
+        IOptions<JwtSettings> jwtSettings,
+        UserManager<AppUser> userManager,
+        RoleManager<AppRole> roleManager,
+        IPermissionRepository permissionRepository)
         {
             _jwtSettings = jwtSettings.Value;
             _userManager = userManager;
+            _roleManager = roleManager;
+            _permissionRepository = permissionRepository;
         }
 
         public async Task<string> GenerateToken(AppUser user)
         {
-            var roles = await _userManager.GetRolesAsync(user);
+            var roleNames = await _userManager.GetRolesAsync(user);
+
+            var roleIds = new List<Guid>();
+
+            foreach (var roleName in roleNames)
+            {
+                var role = await _roleManager.FindByNameAsync(roleName);
+
+                if (role != null)
+                {
+                    roleIds.Add(role.Id);
+                }
+            }
+
+            var permissions =
+                await _permissionRepository
+                    .GetPermissionsByRoleIdsAsync(roleIds);
 
             var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.FullName),
-                new Claim(ClaimTypes.Email, user.Email!)    
-            };
+    {
+        new Claim(
+            ClaimTypes.NameIdentifier,
+            user.Id.ToString()),
 
-            foreach (var role in roles)
+        new Claim(
+            ClaimTypes.Name,
+            user.FullName),
+
+        new Claim(
+            ClaimTypes.Email,
+            user.Email!)
+    };
+
+            foreach (var role in roleNames)
             {
-                claims.Add(new Claim(ClaimTypes.Role, role));
+                claims.Add(
+                    new Claim(
+                        ClaimTypes.Role,
+                        role));
+            }
+
+            foreach (var permission in permissions)
+            {
+                claims.Add(
+                    new Claim(
+                        "permission",
+                        permission));
             }
 
             var key = new SymmetricSecurityKey(
@@ -51,10 +92,12 @@ namespace BirlesikERP.Infrastructure.Security
                 issuer: _jwtSettings.Issuer,
                 audience: _jwtSettings.Audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(_jwtSettings.ExpireMinutes),
+                expires: DateTime.UtcNow.AddMinutes(
+                    _jwtSettings.ExpireMinutes),
                 signingCredentials: credentials);
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return new JwtSecurityTokenHandler()
+                .WriteToken(token);
         }
     }
 }

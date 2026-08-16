@@ -10,6 +10,7 @@ using BirlesikERP.Application.Services.Audit;
 using BirlesikERP.Application.Services.Core;
 using BirlesikERP.Application.Services.Dashboard;
 using BirlesikERP.Application.Services.HumanResources;
+using BirlesikERP.Authorization;
 using BirlesikERP.Domain.Entities.Core.AppRole;
 using BirlesikERP.Domain.Entities.Core.AppUser;
 using BirlesikERP.Domain.Repositories;
@@ -20,14 +21,15 @@ using BirlesikERP.Persistence.Repositories;
 using BirlesikERP.Persistence.Repositories.Audit;
 using BirlesikERP.Persistence.Repositories.Core;
 using BirlesikERP.Persistence.Repositories.HumanResources;
+using BirlesikERP.Persistence.Repositories.Permissions;
+using BirlesikERP.Persistence.Seed;
 using BirlesikERP.Persistence.UnitOfWork;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
-using Serilog;
-using Serilog.Sinks.MSSqlServer;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -138,7 +140,8 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.LicenseKey = builder.Configuration["AutoMapper:LisansAnahtari"];
 }, typeof(MappingProfile).Assembly);
 
-
+builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+builder.Services.AddSingleton<IAuthorizationHandler, PermissionHandler>();
 builder.Services.AddScoped(typeof(IRepository<>),
                            typeof(Repository<>));
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
@@ -146,6 +149,7 @@ builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IPositionRepository, PositionRepository>();
 builder.Services.AddScoped<IAuditRepository, AuditRepository>();
+builder.Services.AddScoped<IPermissionRepository, PermissionRepository>();
 
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<IAuditService, AuditService>();
@@ -156,7 +160,7 @@ builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
-builder.Services.AddScoped<ITokenService, JwtTokenService>();
+builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 
@@ -194,6 +198,19 @@ builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
+#region SeedData
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var context = services.GetRequiredService<AppDbContext>();
+    var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
+
+    await DatabaseSeeder.SeedAsync(
+        context,
+        roleManager);
+}
+#endregion
 #region Middleware Pipeline
 
 app.MapOpenApi();

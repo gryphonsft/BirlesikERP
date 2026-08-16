@@ -1,6 +1,8 @@
-﻿using BirlesikERP.Application.DTOs.User;
+﻿using BirlesikERP.Application.Constants;
+using BirlesikERP.Application.DTOs.User;
 using BirlesikERP.Application.Exceptions;
 using BirlesikERP.Application.Interfaces.Core;
+using BirlesikERP.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BirlesikERP.Controllers
@@ -18,7 +20,7 @@ namespace BirlesikERP.Controllers
         [HttpPost]
         public async Task<IActionResult> AssignRole([FromBody] AssignRoleRequest request)
         {
-            var role = await _roleService.AssignRole(request.Id,request.roleName);
+            var role = await _roleService.AssignRole(request.Id, request.roleName);
 
             if (!role)
                 throw new BusinessException("Bir hata oldu.");

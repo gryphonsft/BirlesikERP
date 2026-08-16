@@ -2,16 +2,10 @@
 using BirlesikERP.Application.DTOs.Core;
 using BirlesikERP.Application.DTOs.HumanResources;
 using BirlesikERP.Application.Exceptions;
-using BirlesikERP.Application.Interfaces;
 using BirlesikERP.Application.Interfaces.Core;
 using BirlesikERP.Application.Interfaces.UnitOfWork;
 using BirlesikERP.Domain.Entities.Core;
 using BirlesikERP.Domain.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BirlesikERP.Application.Services.Core
 {

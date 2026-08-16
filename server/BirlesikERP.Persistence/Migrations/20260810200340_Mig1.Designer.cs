@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BirlesikERP.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260802103311_mig1")]
-    partial class mig1
+    [Migration("20260810200340_Mig1")]
+    partial class Mig1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,11 +38,9 @@ namespace BirlesikERP.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DepartmentName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Entity")
@@ -55,7 +53,6 @@ namespace BirlesikERP.Persistence.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("userName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -349,6 +346,46 @@ namespace BirlesikERP.Persistence.Migrations
                     b.ToTable("Person");
                 });
 
+            modelBuilder.Entity("BirlesikERP.Domain.Entities.Permissions.AppRolePermission", b =>
+                {
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("PermissionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RoleId", "PermissionId");
+
+                    b.HasIndex("PermissionId");
+
+                    b.ToTable("RolePermissions");
+                });
+
+            modelBuilder.Entity("BirlesikERP.Domain.Entities.Permissions.Permission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Permission");
+                });
+
             modelBuilder.Entity("BirlesikERP.Domain.Entities.ProjectManagment.Customer", b =>
                 {
                     b.Property<Guid>("Id")
@@ -635,6 +672,25 @@ namespace BirlesikERP.Persistence.Migrations
                     b.Navigation("Employee");
                 });
 
+            modelBuilder.Entity("BirlesikERP.Domain.Entities.Permissions.AppRolePermission", b =>
+                {
+                    b.HasOne("BirlesikERP.Domain.Entities.Permissions.Permission", "Permission")
+                        .WithMany("RolePermissions")
+                        .HasForeignKey("PermissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BirlesikERP.Domain.Entities.Core.AppRole.AppRole", "Role")
+                        .WithMany("RolePermissions")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Permission");
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("BirlesikERP.Domain.Entities.ProjectManagment.Project", b =>
                 {
                     b.HasOne("BirlesikERP.Domain.Entities.ProjectManagment.Customer", "Customer")
@@ -708,6 +764,11 @@ namespace BirlesikERP.Persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("BirlesikERP.Domain.Entities.Core.AppRole.AppRole", b =>
+                {
+                    b.Navigation("RolePermissions");
+                });
+
             modelBuilder.Entity("BirlesikERP.Domain.Entities.Core.Department", b =>
                 {
                     b.Navigation("Employees");
@@ -733,6 +794,11 @@ namespace BirlesikERP.Persistence.Migrations
 
                     b.Navigation("Person")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("BirlesikERP.Domain.Entities.Permissions.Permission", b =>
+                {
+                    b.Navigation("RolePermissions");
                 });
 
             modelBuilder.Entity("BirlesikERP.Domain.Entities.ProjectManagment.Customer", b =>

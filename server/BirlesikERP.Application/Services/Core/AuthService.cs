@@ -1,19 +1,21 @@
 ﻿using BirlesikERP.Application.DTOs.Auth;
+using BirlesikERP.Application.Exceptions;
 using BirlesikERP.Application.Interfaces;
 using BirlesikERP.Application.Interfaces.Core;
 using BirlesikERP.Domain.Entities.Core.AppUser;
 using BirlesikERP.Domain.Repositories;
 using Microsoft.AspNetCore.Identity;
 
+
 namespace BirlesikERP.Application.Services.Core
 {
     public class AuthService : IAuthService
     {
         private readonly UserManager<AppUser> _userManager;
-        private readonly ITokenService _tokenService;
+        private readonly IJwtTokenService _tokenService;
         private readonly IEmployeeRepository _employeeRepository;
         
-        public AuthService(UserManager<AppUser> userManager, ITokenService tokenService,IEmployeeRepository employeeRepository)
+        public AuthService(UserManager<AppUser> userManager, IJwtTokenService tokenService,IEmployeeRepository employeeRepository)
         {
             _userManager = userManager;
             _tokenService = tokenService;
@@ -56,13 +58,7 @@ namespace BirlesikERP.Application.Services.Core
             var existinguser = await _userManager.FindByNameAsync(request.Username);
 
             if (existinguser != null)
-            {
-                return new RegisterResponseDto
-                {
-                    Success = false,
-                    Message = "Bu kullanici adi zaten kullaniliyor."
-                };
-            }
+                throw new ValidationException("Böyle bir kullanıcı bulunuyor.");
 
             var user = new AppUser
             {

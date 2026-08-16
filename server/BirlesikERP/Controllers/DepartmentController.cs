@@ -1,5 +1,7 @@
-﻿using BirlesikERP.Application.DTOs.Core;
+﻿using BirlesikERP.Application.Constants;
+using BirlesikERP.Application.DTOs.Core;
 using BirlesikERP.Application.Interfaces.Core;
+using BirlesikERP.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,6 +18,7 @@ namespace BirlesikERP.Controller
             _departmentService = departmentService;
         }
         [HttpGet]
+        [HasPermission(PermissionConstants.DepartmentView)]
         public async Task<IActionResult> GetAll()
         {
             var department = await _departmentService.GetAllAsync();

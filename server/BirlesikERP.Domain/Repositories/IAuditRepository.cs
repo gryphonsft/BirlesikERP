@@ -10,7 +10,7 @@ namespace BirlesikERP.Domain.Repositories
     public interface IAuditRepository
     {
         Task AddAsync(AuditLog auditLog);
-        Task<List<AuditLog>> GetRecentAsync(int count = 10);
+        Task<List<AuditLog>> GetRecentAsync();
         Task<List<AuditLog>> GetByActionAsync(AuditAction action);
     }
 }

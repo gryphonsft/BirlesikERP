@@ -17,11 +17,10 @@ namespace BirlesikERP.Persistence.Repositories.Audit
         {
             await _context.AuditLog.AddAsync(auditLog);
         }
-        public async Task<List<AuditLog>> GetRecentAsync(int count = 10)
+        public async Task<List<AuditLog>> GetRecentAsync()
         {
             return await _context.AuditLog
                 .OrderByDescending(x => x.CreatedAt)
-                .Take(count)
                 .ToListAsync();
         }
 
