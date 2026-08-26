@@ -19,9 +19,5 @@ export function searchEmployee(search) {
 }
 // Id'ye göre kullanıcı getir.
 export function getEmployeeById(id) {
-    return api.get("/Employee/GetById", {
-        params: {
-            Id: id
-        }
-    });
+    return api.get(`/Employee/GetById/${id}`);
 }

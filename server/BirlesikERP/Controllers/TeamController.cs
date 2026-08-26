@@ -35,6 +35,12 @@ namespace BirlesikERP.Controllers
             await _teamService.CreateAsync(dto);
             return Ok("Takım basariyla eklendi");
         }
+        [HttpPut("{Id}")]
+        public async Task<IActionResult> Update(Guid Id, [FromBody] UpdateTeamDto dto)
+        {
+            await _teamService.UpdateAsync(Id, dto);
+            return NoContent();
+        }
         [HttpDelete("{Id}")]
         public async Task<IActionResult> DeleteById(Guid Id)
         {

@@ -28,17 +28,30 @@ namespace BirlesikERP.Application.Services.Core
                 Name = team.Name,
                 Description = team.Description,
                 IsActive = team.IsActive,
+                DepartmentId = team.DepartmentId,
+                Department = team.Department is null ? null : new DepartmentSummaryDto
+                {
+                    Name = team.Department.Name,
+                    Description = team.Department.Description
+                },
+                Employees = team.Employees.Select(e => new EmployeeSummaryDto
+                {
+                    FirstName = e.Person.FirstName,
+                    LastName = e.Person.LastName,
+                    PositionName = e.Position?.Name
+                }).ToList(),
                 CreatedAt = team.CreatedAt
             }).ToList();
-
         }
         public async Task<TeamDto?> GetByIdAsync(Guid Id)
         {
             var team = await _teamRepository.GetByIdAsync(Id);
 
             if (team is null)
+            {
                 throw new NotFoundException("Takım bulunamadı");
-
+            }
+             
             return new TeamDto
             {
                 Id = team.Id,
@@ -87,11 +100,26 @@ namespace BirlesikERP.Application.Services.Core
             await _teamRepository.CreateAsync(team);
             await _unitOfWork.SaveChangesAsync();
         }
+        public async Task UpdateAsync(Guid Id,UpdateTeamDto dto)
+        {
+            var team = await _teamRepository.GetForUpdateAsync(Id);
+
+            if (team is null)
+            {
+                throw new NotFoundException("Böyle bir takım bulunamadı");
+            }
+              
+            team.Name = dto.Name;
+            team.Description = dto.Description;
+            team.IsActive = dto.IsActive;
+
+            await _unitOfWork.SaveChangesAsync();
+        }
         public async Task DeleteByIdAsync(Guid Id)
         {
             var team = await _teamRepository.GetByIdAsync(Id);
 
-            if (team == null)
+            if (team is null)
             {
                 throw new NotFoundException("Böyle bir takım bulunamadı");
             }

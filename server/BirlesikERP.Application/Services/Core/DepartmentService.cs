@@ -65,7 +65,6 @@ namespace BirlesikERP.Application.Services.Core
 
                     Employees = t.Employees.Select(e => new EmployeeSummaryDto
                     {
-                        Id = e.Id,
                         FirstName = e.Person.FirstName,
                         LastName = e.Person.LastName
                     }).ToList()
@@ -91,9 +90,11 @@ namespace BirlesikERP.Application.Services.Core
         {
             var department = await _departmentRepository.GetByIdAsync(Id);
 
-            if (department == null)
+            if (department is null)
+            {
                 throw new Exception("Böyle bir departman bulunamadı");
-
+            }
+                
             department.Name = dto.Name;
             department.Description = dto.Description;
 
@@ -105,8 +106,10 @@ namespace BirlesikERP.Application.Services.Core
             var department = await _departmentRepository.GetByIdAsync(Id);
 
             if (department is null)
+            {
                 throw new NotFoundException("Departman bulunamadı.");
-
+            }
+                
             await _departmentRepository.DeleteByIdAsync(Id);
             await _unitOfWork.SaveChangesAsync();
         }
@@ -114,7 +117,9 @@ namespace BirlesikERP.Application.Services.Core
         public async Task<IEnumerable<DepartmentDto>> SearchAsync(string value)
         {
             if (value.Length <= 3)
+            {
                 return Enumerable.Empty<DepartmentDto>();
+            }         
 
             var department = await _departmentRepository.SearchAsync(value);
 

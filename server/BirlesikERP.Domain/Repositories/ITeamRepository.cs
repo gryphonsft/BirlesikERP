@@ -9,6 +9,7 @@ namespace BirlesikERP.Domain.Repositories
         Task<Team?> GetByNameAsync(string Name);
         Task CreateAsync(Team team);
         Task UpdateAsync(Team team);
+        Task<Team?> GetForUpdateAsync(Guid Id);
         Task DeleteByIdAsync(Guid Id);
         Task DeleteByNameAsync(string Name);
         Task<IEnumerable<Team>> SearchAsync(string value);

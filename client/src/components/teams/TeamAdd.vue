@@ -49,7 +49,7 @@ function submit() {
             </div>
 
             <div class="p-8 space-y-8">
-                <div class=" rounded-xl p-6" style="background-color: #141C2F;">
+                <div class=" rounded-xl p-6" style="background-color: #1C2532;">
 
                     <div class="grid grid-cols-3">
 
@@ -112,7 +112,7 @@ function submit() {
 
             <div class="flex w-full h-full gap-8 p-8">
 
-                <div class="basis-3/5 rounded-xl shadow-2xl" style="background-color: #141C2F;">
+                <div class="basis-3/5 rounded-xl shadow-2xl" style="background-color: #1C2532;">
 
                     <div class="px-8 py-5 mt-4">
                         <div class="flex items-center gap-2">
@@ -165,7 +165,7 @@ function submit() {
 
                 </div>
 
-                <div class="basis-2/5 rounded-xl shadow-2xl" style="background-color: #141C2F;">
+                <div class="basis-2/5 rounded-xl shadow-2xl" style="background-color: #1C2532;">
 
                     <div class="px-8 py-5 mt-4">
                         <div class="flex items-center gap-2">

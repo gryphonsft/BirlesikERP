@@ -17,6 +17,13 @@ namespace BirlesikERP.Persistence.Repositories.Core
         {
             return await _context.Team
                    .AsNoTracking()
+                   .Include(x => x.Department)
+                   .Include(x => x.Employees)
+                        .ThenInclude(e => e.Person)
+                   .Include(x => x.Employees)
+                        .ThenInclude(e => e.Position)
+                   .Include(x => x.Employees)
+                        .ThenInclude(e => e.Department)
                    .ToListAsync();
         }
         public async Task<Team?> GetByIdAsync(Guid Id)
@@ -24,11 +31,11 @@ namespace BirlesikERP.Persistence.Repositories.Core
             return await _context.Team
                 .AsNoTracking()
                 .Include(x => x.Department)
-                   .Include(x => x.Employees)
+                .Include(x => x.Employees)
                         .ThenInclude(e => e.Person)
-                   .Include(x => x.Employees)
+                .Include(x => x.Employees)
                         .ThenInclude(e => e.Position)
-                   .Include(x => x.Employees)
+                .Include(x => x.Employees)
                         .ThenInclude(e => e.Department)
                 .FirstOrDefaultAsync(x => x.Id == Id);
         }
@@ -43,6 +50,11 @@ namespace BirlesikERP.Persistence.Repositories.Core
         public async Task UpdateAsync(Team team)
         {
             _context.Team.Update(team);
+        }
+        public async Task<Team?> GetForUpdateAsync(Guid Id)
+        {
+            return await _context.Team
+                .FirstOrDefaultAsync(x => x.Id == Id);
         }
         public async Task DeleteByIdAsync(Guid Id)
         {

@@ -12,6 +12,7 @@ namespace BirlesikERP.Application.Interfaces.Core
         Task<IEnumerable<TeamListDto>> GetAllAsync();
         Task<TeamDto?> GetByIdAsync(Guid Id);
         Task CreateAsync(CreateTeamDto dto);
+        Task UpdateAsync(Guid Id,UpdateTeamDto dto);
         Task DeleteByIdAsync(Guid Id);
         Task DeleteAllAsync();
     }

@@ -40,7 +40,6 @@ namespace BirlesikERP.Application.Services.HumanResources
 
             return employees.Select(x => new EmployeeSummaryDto
             {
-                Id = x.Id,
                 FirstName = x.Person.FirstName,
                 LastName = x.Person.LastName
             });
@@ -152,7 +151,6 @@ namespace BirlesikERP.Application.Services.HumanResources
 
             var result = employee.Select(x => new EmployeeSummaryDto
             {
-                Id = x.Id,
                 FirstName = x.Person.FirstName,
                 LastName = x.Person.LastName
             });
