@@ -1,9 +1,4 @@
 ﻿using BirlesikERP.Application.DTOs.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BirlesikERP.Application.Interfaces.Core
 {
@@ -15,5 +10,6 @@ namespace BirlesikERP.Application.Interfaces.Core
         Task UpdateAsync(Guid Id,UpdateTeamDto dto);
         Task DeleteByIdAsync(Guid Id);
         Task DeleteAllAsync();
+        Task AssignEmployee(AssignEmployeeRequest request);
     }
 }

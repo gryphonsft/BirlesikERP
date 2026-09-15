@@ -74,6 +74,8 @@ namespace BirlesikERP.Application.Services.Core
         }
         public async Task CreateAsync(CreateDepartmentDto dto)
         {
+            // if kontrolü  
+
             var department = new Department
             {
                 Name = dto.Name,

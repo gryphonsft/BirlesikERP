@@ -17,6 +17,7 @@ namespace BirlesikERP.Persistence.Repositories.HumanResources
         {
             return await _context.Employee
                     .Include(x => x.Person)
+                    .Include(x => x.Position)
                     .AsNoTracking()
                     .OrderBy(x => x.Person.FirstName)
                     .Skip((page - 1) * pageSize)

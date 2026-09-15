@@ -11,7 +11,7 @@
         public DateTime BirthDate { get; set; }
 
         public Guid DepartmentId { get; set; }
-        public Guid TeamId { get; set; }
+        public Guid? TeamId { get; set; }
         public Guid PositionId { get; set; }
     }
 }

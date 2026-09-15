@@ -1,79 +1,82 @@
 <script setup>
-import { ref } from "vue";
-import EmployeeSearch from './EmployeeSearch.vue';
+import Table from '../../components/common/Table.vue';
+import { Eye, SquarePen, Trash2 } from "@lucide/vue";
 
+const columns = [
+    {
+        key: "firstName",
+        label: "Ad"
+    },
+    {
+        key: "lastName",
+        label: "Soyad"
+    },
+    {
+        key: "positionName",
+        label: "Pozisyon adı"
+    }
+
+]
 defineProps({
-  employees: Array,
-  count: Number
-});
-
-const search = defineModel();
-const emit = defineEmits([
-  "edit",
-  "nextPage",
-  "previousPage"
-]);
+    employees: {
+        type: Array,
+        required: true
+    }
+})
 </script>
 
 <template>
-  <div class="bg-[#18181C] p-6 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+    <div>
+        <div class="flex justify-between items-center mb-4">
 
-    <div class="flex justify-between items-center mb-4">
-      <div class="flex items-center gap-5">
-        <h2 class="text-2xl font-bold text-white">Çalışanlar</h2>
+            <h2 class="text-2xl font-bold text-white">
+                Çalışanlar
+            </h2>
 
-        <EmployeeSearch v-model="search" />
-      </div>
+            <RouterLink to="teams/add" class="flex items-center gap-2 bg-white p-2 px-6 rounded-lg text-slate-950">
+                Yeni Çalışan
+            </RouterLink>
+        </div>
+
+        <Table :columns="columns" :items="employees">
+
+            <template #cell-isActive="{ item }">
+                <span v-if="item.isActive" class="text-green-400 bg-green-600/10 p-2 px-3 
+               rounded-xl border
+             border-green-900">
+                    Aktif
+                </span>
+
+                <span v-else class="text-yellow-400 bg-yellow-600/10 p-2 px-3 rounded-xl border
+            border-yellow-500/50
+            ">
+                    Pasif
+                </span>
+            </template>
+
+            <template #actions="{ item }">
+
+                <div class="flex justify-end gap-2">
+
+                    <button type="button" @click="editTeam(item)"
+                        class="px-2 py-2 text-sm text-white bg-gray-600/50 rounded-lg">
+                        <Eye :size="20" class="text-gray-400" />
+                    </button>
+                    <button type="button" @click="editTeam(item)"
+                        class="px-2 py-2 text-sm text-white bg-indigo-400/60 rounded-lg">
+                        <SquarePen :size="20" class="text-blue-950" />
+                    </button>
+
+                    <button type="button" @click="deleteTeam(item.id)"
+                        class="px-2 py-2 text-sm text-white bg-red-500/30 rounded-lg">
+                        <Trash2 :size="20" class="text-rose-700" />
+                    </button>
+
+                </div>
+
+            </template>
+
+        </Table>
     </div>
 
-    <table class="w-full border-separate border-spacing-0 overflow-hidden rounded-xl">
-
-      <thead class="bg-[#26262A] text-white">
-        <tr>
-          <th class="p-4 text-left">Id</th>
-          <th class="p-4 text-left">Ad</th>
-          <th class="p-4 text-left">Soyad</th>
-          <th class="p-4 text-left"></th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr
-          v-for="employee in employees"
-          :key="employee.id"
-          class="text-lg text-white transition-all duration-200"
-        >
-          <td class="p-4 border-b border-gray-200">{{ employee.id }}</td>
-          <td class="p-4 border-b border-gray-200">{{ employee.firstName }}</td>
-          <td class="p-4 border-b border-gray-200">{{ employee.lastName }}</td>
-          <td class="p-4 border-b border-gray-200">
-            <button
-              class="bg-[#26262A] text-white px-3 py-2 rounded hover:bg-[#313136] transition-colors"
-              @click="emit('edit', employee.id)"
-            >
-              Detaylı
-            </button>
-          </td>
-        </tr>
-      </tbody>
-
-    </table>
-
-    <div class="flex justify-end gap-4 mt-4">
-      <button
-        class="bg-[#26262A] text-white px-4 py-2 rounded hover:bg-[#313136] transition-colors"
-        @click="emit('previousPage')"
-      >
-        Önceki Sayfa
-      </button>
-
-      <button
-        class="bg-[#26262A] text-white px-4 py-2 rounded hover:bg-[#313136] transition-colors"
-        @click="emit('nextPage')"
-      >
-        Sonraki Sayfa
-      </button>
-    </div>
-
-  </div>
 </template>

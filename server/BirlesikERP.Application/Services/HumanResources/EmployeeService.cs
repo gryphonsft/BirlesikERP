@@ -41,7 +41,8 @@ namespace BirlesikERP.Application.Services.HumanResources
             return employees.Select(x => new EmployeeSummaryDto
             {
                 FirstName = x.Person.FirstName,
-                LastName = x.Person.LastName
+                LastName = x.Person.LastName,
+                PositionName = x.Position.Name
             });
         }
         public async Task<EmployeeDto?> GetByIdAsync(Guid Id)

@@ -27,6 +27,7 @@ namespace BirlesikERP.Application.Services.Core
                 CreatedAt = x.CreatedAt,
                 Department = new DepartmentDto
                 {
+                    Id = x.Department.Id,
                     Name = x.Department.Name,
                     Description = x.Department.Description,
                     CreatedAt = x.Department.CreatedAt

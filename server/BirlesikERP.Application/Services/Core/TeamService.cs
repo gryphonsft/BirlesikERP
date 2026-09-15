@@ -5,17 +5,20 @@ using BirlesikERP.Application.Interfaces.Core;
 using BirlesikERP.Application.Interfaces.UnitOfWork;
 using BirlesikERP.Domain.Entities.Core;
 using BirlesikERP.Domain.Repositories;
+using Microsoft.AspNetCore.Http;
 
 namespace BirlesikERP.Application.Services.Core
 {
     public class TeamService : ITeamService
     {
         private readonly ITeamRepository _teamRepository;
+        private readonly IEmployeeRepository _employeeRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public TeamService(ITeamRepository teamRepository, IUnitOfWork unitOfWork)
+        public TeamService(ITeamRepository teamRepository, IEmployeeRepository employeeRepository, IUnitOfWork unitOfWork)
         {
             _teamRepository = teamRepository;
+            _employeeRepository = employeeRepository;
             _unitOfWork = unitOfWork;
         }
         public async Task<IEnumerable<TeamListDto>> GetAllAsync()
@@ -129,6 +132,36 @@ namespace BirlesikERP.Application.Services.Core
         public async Task DeleteAllAsync()
         {
             await _teamRepository.DeleteAllAsync();
+            await _unitOfWork.SaveChangesAsync();
+        }
+        public async Task AssignEmployee(AssignEmployeeRequest request)
+        {
+            var team = await _teamRepository.GetByIdAsync(request.teamId);
+
+            if (team is null)
+            {
+                throw new NotFoundException("Takım bulunamadı");
+            }
+
+            var employee = await _employeeRepository.GetByIdAsync(request.employeeId);
+
+            if (employee is null)
+            {
+                throw new NotFoundException("Calisan bulunamadı");
+            }
+
+            if (team.Employees.Any(e => e.Id == employee.Id))
+            {
+                throw new BadHttpRequestException("Bu calisan zaten bu takıma atanmış");
+            }
+
+            if (employee.TeamId is not null)
+            {
+                throw new BadHttpRequestException("Bu calisan baska bir takıma atanmış");
+            }
+
+            employee.TeamId = request.teamId;
+            await _employeeRepository.UpdateAsync(employee);
             await _unitOfWork.SaveChangesAsync();
         }
     }

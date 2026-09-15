@@ -53,5 +53,11 @@ namespace BirlesikERP.Controllers
             await _teamService.DeleteAllAsync();
             return NoContent();
         }
+        [HttpPut]
+        public async Task<IActionResult> AssignEmployee(AssignEmployeeRequest request)
+        {
+            await _teamService.AssignEmployee(request);
+            return NoContent();
+        }
     }
 }

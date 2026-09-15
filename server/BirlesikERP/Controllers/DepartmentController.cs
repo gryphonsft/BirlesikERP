@@ -18,7 +18,7 @@ namespace BirlesikERP.Controller
             _departmentService = departmentService;
         }
         [HttpGet]
-        [HasPermission(PermissionConstants.DepartmentView)]
+        //[HasPermission(PermissionConstants.DepartmentView)]
         public async Task<IActionResult> GetAll()
         {
             var department = await _departmentService.GetAllAsync();

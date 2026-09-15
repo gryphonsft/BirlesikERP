@@ -53,25 +53,25 @@ import logo from '@/assets/images/logo.png';
                 </RouterLink>
             </div>
             <div class="flex items-center">
-                <RouterLink to="/positions" class="flex items-center rounded-lg px-4 py-3 gap-2 hover:bg-slate-800">
+                <RouterLink to="" class="flex items-center rounded-lg px-4 py-3 gap-2 hover:bg-slate-800">
                     <BriefcaseBusiness />
                     Positions
                 </RouterLink>
             </div>
             <div class="flex items-center">
-                <RouterLink to="/projects" class="flex items-center rounded-lg px-4 py-3 gap-2 hover:bg-slate-800">
+                <RouterLink to="" class="flex items-center rounded-lg px-4 py-3 gap-2 hover:bg-slate-800">
                     <Folders />
                     Projects
                 </RouterLink>
             </div>
             <div class="flex items-center">
-                <RouterLink to="/roles" class="flex items-center rounded-lg px-4 py-3 gap-2 hover:bg-slate-800">
+                <RouterLink to="" class="flex items-center rounded-lg px-4 py-3 gap-2 hover:bg-slate-800">
                     <UserKey />
                     Roles
                 </RouterLink>
             </div>
             <div class="flex items-center">
-                <RouterLink to="/logs" class="flex items-center rounded-lg px-4 py-3 gap-2 hover:bg-slate-800">
+                <RouterLink to="" class="flex items-center rounded-lg px-4 py-3 gap-2 hover:bg-slate-800">
                     <ScrollText />
                     Logs
                 </RouterLink>
