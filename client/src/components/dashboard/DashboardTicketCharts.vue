@@ -1,110 +1,139 @@
+
 <template>
-  <div>
-    
-    <div id="chart">
+  <div class="w-full min-w-0">
+    <div class="w-full min-w-0 overflow-hidden">
       <apexchart
         type="bar"
         height="300"
-        width="500"
+        width="100%"
         :options="chartOptions"
         :series="series"
-      ></apexchart>
+      />
     </div>
   </div>
 </template>
 
 <script>
-import VueApexCharts from 'vue3-apexcharts'
-
+import VueApexCharts from "vue3-apexcharts";
 
 export default {
   components: {
     apexchart: VueApexCharts,
   },
-  data: function () {
+
+  data() {
     return {
       series: [
         {
           data: [160, 210, 240],
         },
       ],
+
       chartOptions: {
         chart: {
-          type: 'bar',
-          height: 380,
+          type: "bar",
+          height: 300,
+          toolbar: {
+            show: false,
+          },
+          redrawOnParentResize: true,
+          redrawOnWindowResize: true,
         },
+
         plotOptions: {
           bar: {
-            barHeight: '100%',
+            barHeight: "70%",
             distributed: true,
             horizontal: true,
             dataLabels: {
-              position: 'bottom',
+              position: "bottom",
             },
           },
         },
+
         theme: {
           monochrome: {
             enabled: true,
-            color: '#3974FF',
-            shadeTo: 'dark',
+            color: "#3974FF",
+            shadeTo: "dark",
             shadeIntensity: 0.5,
           },
         },
+
         dataLabels: {
           enabled: true,
-          textAnchor: 'start',
+          textAnchor: "start",
           style: {
-            colors: ['#fff'],
+            colors: ["#fff"],
             fontWeight: 600,
+            fontSize: "12px",
           },
-          formatter: function (val, opt) {
-            return opt.w.globals.labels[opt.dataPointIndex] + ':  ' + val
+          formatter(val, opt) {
+            return `${opt.w.globals.labels[opt.dataPointIndex]}: ${val}`;
           },
           offsetX: 8,
         },
+
         legend: {
           show: false,
         },
+
         xaxis: {
-          categories: [
-      'Açık',
-      'Kapalı',
-      'Ertelendi'
-          ],
+          categories: ["Açık", "Kapalı", "Ertelendi"],
         },
+
         yaxis: {
           labels: {
             show: false,
           },
         },
+
         title: {
-          text: 'Destek Talepleri Grafiği',
-          align: 'center',
+          text: "Destek Talepleri Grafiği",
+          align: "center",
           floating: true,
+          style: {
+            fontSize: "14px",
+          },
         },
+
         tooltip: {
-          theme: 'white',
+          theme: "dark",
           x: {
             show: false,
           },
           y: {
             title: {
-              formatter: function () {
-                return ''
+              formatter() {
+                return "";
               },
             },
           },
         },
-      },
-    }
-  },
-}
-</script>
 
-<style>
-#chart {
-  max-width: 650px;
-  margin: 35px auto;
-}
-</style>
+        responsive: [
+          {
+            breakpoint: 480,
+            options: {
+              chart: {
+                height: 280,
+              },
+              dataLabels: {
+                style: {
+                  fontSize: "10px",
+                },
+                offsetX: 4,
+              },
+              title: {
+                style: {
+                  fontSize: "12px",
+                },
+              },
+            },
+          },
+        ],
+      },
+    };
+  },
+};
+</script>

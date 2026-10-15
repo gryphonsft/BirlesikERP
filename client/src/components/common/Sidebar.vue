@@ -1,84 +1,82 @@
+
 <script setup>
+import { watch } from "vue";
+import { useRoute } from "vue-router";
 import {
-    LayoutDashboard,
-    Users,
-    Building2,
-    Handshake,
-    BriefcaseBusiness,
-    UserKey,
-    ScrollText,
-    Folders
-} from '@lucide/vue';
-import logo from '@/assets/images/logo.png';
+  LayoutDashboard,
+  Users,
+  Building2,
+  Handshake,
+  BriefcaseBusiness,
+  UserKey,
+  ScrollText,
+  Folders
+} from "@lucide/vue";
+
+import logo from "@/assets/images/logo.png";
+
+const props = defineProps({
+  mobileOpen: {
+    type: Boolean,
+    default: false
+  }
+});
+
+const emit = defineEmits(["close"]);
+const route = useRoute();
+
+watch(
+  () => route.fullPath,
+  () => emit("close")
+);
+
+const links = [
+  { label: "Dashboard", to: "/", icon: LayoutDashboard },
+  { label: "Employees", to: "/employees", icon: Users },
+  { label: "Departments", to: "/departments", icon: Building2 },
+  { label: "Teams", to: "/teams", icon: Handshake },
+  { label: "Positions", to: "", icon: BriefcaseBusiness },
+  { label: "Projects", to: "", icon: Folders },
+  { label: "Roles", to: "", icon: UserKey },
+  { label: "Logs", to: "", icon: ScrollText }
+];
 </script>
+
 <template>
+  <aside
+    :class="[
+      'fixed inset-y-0 left-0 z-50 flex w-72 shrink-0 flex-col',
+      'border-r-2 border-gray-700 text-white',
+      'transform transition-transform duration-300 ease-in-out',
+      'lg:static lg:translate-x-0',
+      mobileOpen ? 'translate-x-0' : '-translate-x-full'
+    ]"
+    style="background-color: #111827;"
+  >
+    <div class="flex h-20 shrink-0 items-center p-2">
+      <img
+        :src="logo"
+        alt="BirlesikERP Logo"
+        class="max-h-full max-w-full object-contain"
+      />
+    </div>
 
-    <aside class="w-72 bg-gray-800 border-r-2 border-gray-700 text-white flex flex-col"
-        style="background-color: #111827;">
-
-        <div class="p-2 flex items-center ">
-            <img :src="logo" alt="Logo">
-        </div>
-
-        <nav class="flex-1 p-6 space-y-2 items-center text-lg">
-
-            <div class="flex items-center">
-
-                <RouterLink to="/" class="flex items-center rounded-lg px-4 py-3 gap-2 hover:bg-slate-800">
-                    <LayoutDashboard />
-                    Dashboard
-
-                </RouterLink>
-            </div>
-
-            <div class="flex items-center">
-                <RouterLink to="/employees" class="flex items-center rounded-lg px-4 py-3 gap-2 hover:bg-slate-800">
-                    <Users />
-                    Employees
-
-                </RouterLink>
-            </div>
-
-            <div class="flex items-center">
-                <RouterLink to="/departments" class="flex items-center rounded-lg px-4 py-3 gap-2 hover:bg-slate-800">
-                    <Building2 />
-                    Departments
-
-                </RouterLink>
-            </div>
-            <div class="flex items-center">
-                <RouterLink to="/teams" class="flex items-center rounded-lg px-4 py-3 gap-2 hover:bg-slate-800">
-                    <Handshake />
-                    Teams
-                </RouterLink>
-            </div>
-            <div class="flex items-center">
-                <RouterLink to="" class="flex items-center rounded-lg px-4 py-3 gap-2 hover:bg-slate-800">
-                    <BriefcaseBusiness />
-                    Positions
-                </RouterLink>
-            </div>
-            <div class="flex items-center">
-                <RouterLink to="" class="flex items-center rounded-lg px-4 py-3 gap-2 hover:bg-slate-800">
-                    <Folders />
-                    Projects
-                </RouterLink>
-            </div>
-            <div class="flex items-center">
-                <RouterLink to="" class="flex items-center rounded-lg px-4 py-3 gap-2 hover:bg-slate-800">
-                    <UserKey />
-                    Roles
-                </RouterLink>
-            </div>
-            <div class="flex items-center">
-                <RouterLink to="" class="flex items-center rounded-lg px-4 py-3 gap-2 hover:bg-slate-800">
-                    <ScrollText />
-                    Logs
-                </RouterLink>
-            </div>
-
-        </nav>
-
-    </aside>
-
+    <nav class="flex-1 space-y-2 overflow-y-auto p-4 text-base">
+      <RouterLink
+        v-for="link in links"
+        :key="link.label"
+        :to="link.to || route.fullPath"
+        @click="emit('close')"
+        class="flex w-full items-center gap-3 rounded-lg px-4 py-3
+               transition-colors hover:bg-slate-800"
+        :class="{
+          'bg-slate-800 text-white':
+            link.to && route.path === link.to
+        }"
+      >
+        <component :is="link.icon" :size="20" />
+        <span>{{ link.label }}</span>
+      </RouterLink>
+    </nav>
+  </aside>
 </template>

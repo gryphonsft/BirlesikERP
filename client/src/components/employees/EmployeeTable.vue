@@ -33,8 +33,8 @@ defineProps({
                 Çalışanlar
             </h2>
 
-            <RouterLink to="teams/add" class="flex items-center gap-2 bg-white p-2 px-6 rounded-lg text-slate-950">
-                Yeni Çalışan
+            <RouterLink to="" class="flex items-center gap-2 bg-white p-2 px-6 rounded-lg text-slate-950">
+                Yeni Çalışan (Yapım aşamasında)
             </RouterLink>
         </div>
 

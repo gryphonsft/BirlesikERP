@@ -10,7 +10,7 @@ import TeamView from "../views/Team/TeamView.vue";
 import TeamAddView from "../views/Team/TeamAddView.vue";
 import PositionView from "../views/Position/PositionView.vue";
 import RolesView from "../views/Role/RolesView.vue";
-import LogsView from "../views/Log/LogsView.vue";
+
 
 const router = createRouter({
   history: createWebHistory(),
@@ -53,12 +53,7 @@ const router = createRouter({
         {
           path:"roles",
           component: RolesView
-        },
-        {
-          path:"logs",
-          component: LogsView
-        },
-        
+        },        
       ],
     },
   ],
