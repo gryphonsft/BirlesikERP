@@ -10,9 +10,9 @@ namespace BirlesikERP.Domain.Entities.ProjectManagment
     public class Customer : BaseEntity
     {
         public string Name { get; set; } = string.Empty;
-        public string? TaxNumber { get; set; }
-        public string? Email { get; set; }
-        public string? Phone { get; set; }
+        public string TaxNumber { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string Phone { get; set; } = string.Empty;
 
         public CustomerType Type { get; set; }
 

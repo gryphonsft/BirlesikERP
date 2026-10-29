@@ -1,6 +1,5 @@
 ﻿using BirlesikERP.Application.DTOs.Core;
 using BirlesikERP.Application.Interfaces.Core;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BirlesikERP.Controllers

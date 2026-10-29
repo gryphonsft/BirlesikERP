@@ -1,17 +1,11 @@
-﻿using BirlesikERP.Application.DTOs.Core;
-using BirlesikERP.Domain.Entities.Core;
+﻿using BirlesikERP.Domain.Entities.Core;
 using BirlesikERP.Domain.Repositories;
 using BirlesikERP.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BirlesikERP.Persistence.Repositories.Core
 {
-    public class DepartmentRepository : Repository<Department> ,IDepartmentRepository
+    public class DepartmentRepository : Repository<Department>, IDepartmentRepository
     {
         private readonly AppDbContext _context;
 
@@ -63,7 +57,7 @@ namespace BirlesikERP.Persistence.Repositories.Core
         {
             var department = await GetByNameAsync(Name);
 
-            if(department != null)
+            if (department != null)
             {
                 _context.Department.Remove(department);
             }
